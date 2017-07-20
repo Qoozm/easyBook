@@ -6,13 +6,13 @@ import java.io.Serializable;
 /**
  * Created by 慧乔乔 on 2017/7/15.
  */
-public class Attention implements Serializable {
+public class AttentionUser implements Serializable {
 
     private Integer attention_id;
     private Integer from_user_id;
     private Integer to_user_id;
 
-    public Attention() {
+    public AttentionUser() {
     }
 
     public Integer getAttention_id() {
