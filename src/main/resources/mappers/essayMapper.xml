@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xupt.dao.IEssayDao">
+
+    <insert id="save" parameterType="com.xupt.bean.Essay" useGeneratedKeys="true" keyProperty="essay_id">
+        insert into ebessay VALUES (NULL,#{essay_title},#{essay_user_id},#{essay_content},#{essay_pubdate},#{essay_visits},#{essay_thumb}, #{essay_category_id})
+    </insert>
+    
+    <resultMap id="essayResultMap" type="com.xupt.bean.Essay">
+        <result column="essay_id" property="essay_id"/>
+        <result column="essay_title" property="essay_title"/>
+        <result column="essay_user_id" property="essay_user_id"/>
+        <result column="essay_content" property="essay_content"/>
+        <result column="essay_pubdate" property="essay_pubdate"/>
+        <result column="essay_visits" property="essay_visits"/>
+        <result column="essay_thumb" property="essay_thumb"/>
+        <result property="essay_category_id" column="essay_category_id"/>
+    </resultMap>
+
+    <select id="findAll" resultMap="essayResultMap">
+        select * from ebessay
+    </select>
+
+    <select id="findOneByEssayId" resultMap="essayResultMap" parameterType="java.lang.Integer">
+        select * from ebessay where essay_id = #{essay_id}
+    </select>
+
+    <select id="findByEssayCategory" parameterType="Integer" resultMap="essayResultMap">
+        SELECT * FROM ebessay WHERE essay_category_id = #{essayCategory}
+    </select>
+
+    <select id="findHotEssayWeek" resultMap="essayResultMap">
+        SELECT * FROM ebessay WHERE essay_pubdate > DATE_SUB(CURDATE(), INTERVAL 1 WEEK) ORDER BY essay_visits DESC
+    </select>
+
+    <select id="findHotEssayMonth" resultMap="essayResultMap">
+        SELECT * FROM ebessay WHERE essay_pubdate > DATE_SUB(CURDATE(), INTERVAL 1 MONTH) ORDER BY essay_visits DESC
+    </select>
+
+    <select id="findEssayByUserId" resultMap="essayResultMap" parameterType="Integer">
+        SELECT * FROM ebessay WHERE essay_user_id = #{userId}
+    </select>
+
+    <delete id="deleteById" parameterType="java.lang.Integer">
+        delete from ebessay where essay_id = #{essay_id}
+    </delete>
+
+    <update id="updateAll" parameterType="com.xupt.bean.Essay">
+        update ebessay SET essay_title = #{essay_title},
+                            essay_user_id = #{essay_user_id},
+                            essay_content = #{essay_content},
+                            essay_pubdate = #{essay_pubdate},
+                            essay_visits = #{essay_visits},
+                            essay_thumb = #{essay_thumb},
+                            essay_comment_id = #{essay_comment_id}
+                            where essay_id = #{essay_id}
+    </update>
+
+    <update id="uodateEssayContent" parameterType="Essay">
+        UPDATE ebessay SET essay_content = #{essay_content} WHERE essay_id = #{essay_id}
+    </update>
+
+    <update id="updateEssayTitle" parameterType="Essay">
+        UPDATE ebessay SET essay_title = #{essay_title} WHERE essay_id = #{essay_id}
+    </update>
+
+    <update id="updateEssayVisits" parameterType="Essay">
+        UPDATE ebessay SET essay_visits = #{essay_visits} WHERE essay_id = #{essay_id}
+    </update>
+    
+    <update id="updateEssayThumb" parameterType="Essay">
+        UPDATE ebessay SET essay_thumb = #{essay_thumb} WHERE essay_id = #{essay_id}
+    </update>
+    
+</mapper>

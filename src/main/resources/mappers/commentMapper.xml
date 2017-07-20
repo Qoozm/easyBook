@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xupt.dao.ICommentDao">
+
+	<insert id="saveComment">
+		INSERT INTO ${commentTableName} VALUES (NULL, #{comment.to_comment_id}, #{comment.comment_content}, #{comment.comment_from_user_id}, #{comment.comment_thumb}, #{comment.comment_essay_id},
+										  #{comment.comment_to_user_id}, #{comment.comment_floor}, #{comment.comment_date})
+	</insert>
+
+	<delete id="deleteByEssayId">
+		DELETE FROM ${commentTableName} WHERE comment_essay_id = #{essayId}
+	</delete>
+
+	<delete id="deleteByCommentId">
+		DELETE FROM ${commentTableName} WHERE comment_id = #{commentId}
+	</delete>
+
+	<delete id="deleteByToCommentId">
+		DELETE FROM ${commentTableName} WHERE to_comment_id = #{toCommentId}
+	</delete>
+
+	<select id="findCommentsByEssayId" resultMap="commentMap">
+		SELECT * FROM ${commentTableName} WHERE comment_essay_id = #{essay.essay_id}
+	</select>
+
+	<select id="findCommentsByToCommentId" resultMap="commentMap">
+		SELECT * FROM ${commentTableName} WHERE to_comment_id = #{comment.comment_id}
+	</select>
+
+	<resultMap id="commentMap" type="Comment">
+		<result column="comment_content" property="comment_content"></result>
+		<result property="comment_date" column="comment_date"></result>
+		<result property="comment_essay_id" column="comment_essay_id"></result>
+		<result property="comment_floor" column="comment_floor"></result>
+		<result property="comment_from_user_id" column="comment_from_user_id"></result>
+		<result property="comment_id" column="comment_id"></result>
+		<result property="comment_thumb" column="comment_thumb"></result>
+		<result property="comment_to_user_id" column="comment_to_user_id"></result>
+		<result property="to_comment_id" column="to_comment_id"></result>
+	</resultMap>
+</mapper>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xupt.dao.IMessageDao">
+
+    <insert id="save" parameterType="com.xupt.bean.Message">
+        insert into ebuser VALUES (NULL,#{message_date},#{message_from_user_id},#{message_to_user_id})
+    </insert>
+
+    <resultMap id="messageResultMap" type="com.xupt.bean.Message">
+        <result column="message_id" property="message_id"/>
+        <result column="message_date" property="message_date"/>
+        <result column="message_from_user_id" property="message_from_user_id"/>
+        <result column="message_to_user_id" property="message_to_user_id"/>
+    </resultMap>
+
+    <select id="findAll" resultMap="messageResultMap">
+            select * from ebmessage
+    </select>
+
+    <select id="findOneById" resultMap="messageResultMap" parameterType="java.lang.Integer">
+        select * from ebuser where user_id = #{user_id}
+    </select>
+
+    <delete id="deleteById" parameterType="java.lang.Integer">
+        delete * from ebmessage where message_id=#{message_id}
+    </delete>
+
+    <update id="update" parameterType="com.xupt.bean.Message">
+        update ebmessage SET message_date = #{message_date},
+        message_from_user_id = #{message_from_user_id}
+        message_to_user_id = #{message_to_user_id}
+        where message_id = #{message_id}
+    </update>
+
+</mapper>

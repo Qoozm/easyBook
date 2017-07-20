@@ -1,0 +1,57 @@
+body{
+	background-color: #F1F1F1;
+}
+.L-container{
+	height: 100%;
+	position: relative;
+	min-height: 500px;
+}
+.L-container .logo{
+	margin-top: 80px;
+	width: 100%;
+	height: 40px;
+	text-align: center;
+}
+
+.L-container .main{
+	position: absolute;
+	left: 50%;
+	margin-left: -175px;
+	margin-top: 20px;
+	width: 350px;
+	background-color: white;
+}
+.main h4{
+	padding-top: 10px;
+	width: 100%;
+	text-align: center;
+	color: #B0A996;
+}
+.main h4 .sign{
+	margin-top: 10px;
+	font-family: "宋体";
+	font-size: 20px;
+}
+.main h4 .sign a{
+	font-family: "宋体";
+	font-size: 20px;
+	color: #B0A996;
+	text-decoration: none;
+	padding-bottom: 1px;
+}
+.main h4 .sign a:hover{
+	border-bottom: #EA6F5A solid 2px;
+}
+.main h4 .sign .on{
+	color: #EA6F5A;
+	border-bottom: #EA6F5A solid 2px;
+}
+.main .form1{
+	padding-top: 20px;
+	width: 100%;
+	text-align: center;
+}
+.main .form1 .btn-submit{
+	width: 220px;
+	height: 30px;
+}

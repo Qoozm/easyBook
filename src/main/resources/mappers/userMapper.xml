@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xupt.dao.IUserDao">
+
+    <insert id="saveUser" parameterType="User">
+        INSERT INTO ebuser VALUES (#{user_id}, #{user_phone}, #{user_name}, #{user_email}, #{user_password}, #{user_fans}, #{user_essay_thumb}, #{user_head_icon_path})
+    </insert>
+
+    <select id="findAll" resultMap="userResultMap">
+        SELECT * FROM ebuser
+    </select>
+
+    <select id="findOne" parameterType="integer" resultMap="userResultMap">
+        SELECT * FROM ebuser WHERE user_id = #{userId}
+    </select>
+
+    <select id="findOneByPhone" parameterType="string" resultMap="userResultMap">
+        SELECT * FROM ebuser WHERE user_phone = #{phone}
+    </select>
+
+    <select id="findOneByName" parameterType="string" resultMap="userResultMap">
+        SELECT * FROM ebuser WHERE user_name = #{name}
+    </select>
+
+    <select id="findOneByEmail" parameterType="string" resultMap="userResultMap">
+        SELECT * FROM ebuser WHERE user_email = #{email}
+    </select>
+
+    <select id="findHotUsersByEssayThumb" resultMap="userResultMap">
+        SELECT * FROM ebuser ORDER BY user_essay_thumb DESC
+    </select>
+
+    <resultMap id="userResultMap" type="User">
+        <result column="user_id" property="user_id"/>
+        <result column="user_email" property="user_email"/>
+        <result column="user_fans" property="user_fans"/>
+        <result column="user_name" property="user_name"/>
+        <result column="user_password" property="user_password"/>
+        <result column="user_phone" property="user_phone"/>
+        <result column="user_essay_thumb" property="user_essay_thumb"/>
+        <result property="user_head_icon_path" column="user_head_icon_path"/>
+    </resultMap>
+
+    <update id="updateUserInfo" parameterType="User">
+        UPDATE ebuser SET user_email = #{user_email},
+                          user_name = #{user_name},
+                          user_phone = #{user_phone},
+                          user_password = #{user_password},
+                          user_head_icon_path = #{user_head_icon_path}
+                      WHERE user_id = #{user_id}
+    </update>
+
+    <update id="updateUserThumb" parameterType="Integer">
+        UPDATE ebuser SET user_essay_thumb = #{thumbNum} WhERE user_id = #{userId}
+    </update>
+
+</mapper>

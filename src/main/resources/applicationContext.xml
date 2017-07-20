@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+    <!-- 不扫描控制器Controller -->
+    <context:component-scan base-package="com.xupt">
+        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+    </context:component-scan>
+
+    <!-- 引入数据源资源文件 -->
+    <context:property-placeholder location="classpath:dbconfig.properties"/>
+
+    <!-- 数据源的配置 -->
+    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+        <property name="jdbcUrl" value="${jdbc.jdbcUrl}"></property>
+        <property name="driverClass" value="${jdbc.driverClass}"></property>
+        <property name="user" value="${jdbc.user}"></property>
+        <property name="password" value="${jdbc.password}"></property>
+        <!--<property name="initialPoolSize" value="${jdbc.initialPoolSize}"></property>-->
+        <!--<property name="minPoolSize" value="${jdbc.minPoolSize}"></property>-->
+        <!--<property name="maxPoolSize" value="${jdbc.maxPoolSize}"></property>-->
+        <!--<property name="idleConnectionTestPeriod" value="${jdbc.idleConnectionTestPeriod}"></property>-->
+        <!--<property name="maxIdleTime" value="${jdbc.maxIdleTime}"></property>-->
+        <!--<property name="maxStatements" value="${jdbc.maxStatements}"></property>-->
+        <!--<property name="maxStatementsPerConnection" value="${jdbc.maxStatementsPerConnection}"></property>-->
+    </bean>
+
+    <!-- 配置和mybatis的整合 -->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"></property>
+
+        <!-- 指定mybatis全局配置文件的位置 -->
+        <property name="configLocation" value="classpath:mybatis-config.xml"></property>
+
+        <!-- 指定mybatis mapper文件的位置 -->
+        <property name="mapperLocations" value="classpath:mappers/*.xml"></property>
+    </bean>
+
+    <!-- 配置扫描器 将mybatis接口的实现加入到IOC容器中 -->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <!-- 扫描s所有dao接口的实现，加入到ioc容器中 -->
+        <property name="basePackage" value="com.xupt.dao"></property>
+    </bean>
+
+    <!-- 事务控制的配置 -->
+    <bean id="dataSourceTransactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <!-- 控制住数据源 -->
+        <property name="dataSource" ref="dataSource"></property>
+    </bean>
+
+    <!-- 使用xml配置形式的注解 -->
+  <!--  <aop:config>
+        &lt;!&ndash; 切点表达式 &ndash;&gt;
+        <aop:pointcut id="txPoint" expression="execution(* com.xupt.service..*(..))"/>
+        &lt;!&ndash; 配置事务增强 &ndash;&gt;
+        <aop:advisor advice-ref="txAdvice" pointcut-ref="txPoint"/>
+    </aop:config>
+
+    &lt;!&ndash; 配置事务如何切入 &ndash;&gt;
+    <tx:advice id="txAdvice" transaction-manager="dataSourceTransactionManager">
+        <tx:attributes>
+            &lt;!&ndash; 所有方法都是事务方法 &ndash;&gt;
+            <tx:method name="*"/>
+            &lt;!&ndash; 以get开始的所有方法 &ndash;&gt;
+            <tx:method name="get*" read-only="true"/>
+        </tx:attributes>
+    </tx:advice>-->
+
+    <!-- 处理mysql数据库连接的异常 -->
+    <!--<aop:aspectj-autoproxy/>-->
+
+    <aop:config>
+        <aop:aspect ref="userDaoAspect">
+            <aop:pointcut id="userServicePointcut" expression="execution(* com.xupt.service.IUserService.register(..))"/>
+
+            <aop:after-throwing pointcut-ref="userServicePointcut" method="afterRepetition" throwing="dex"/>
+        </aop:aspect>
+    </aop:config>
+
+</beans>
