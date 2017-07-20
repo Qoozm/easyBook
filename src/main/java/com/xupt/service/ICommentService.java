@@ -9,7 +9,7 @@ public interface ICommentService {
 
     public int searchWhereToSaveComment(Integer essayId);
 
-    public void saveComment(Comment comment);
+    public void saveComment(Integer essayId, Comment comment);
 
     public void deleteCommentByEassy(Integer essayId);
 
