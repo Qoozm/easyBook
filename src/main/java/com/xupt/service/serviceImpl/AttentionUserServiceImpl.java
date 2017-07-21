@@ -42,7 +42,7 @@ public class AttentionUserServiceImpl implements IAttentionUserService {
         attentionUserDao.saveAttentionUser(attentionUserTableName, attentionUser);
     }
 
-    public void removeAttention(Integer user_from_id, Integer user_to_id) {
+    public void cancelAttention(Integer user_from_id, Integer user_to_id) {
         int tableCount = searchWhereToSaveAttentionUser(user_from_id);
         String attentionUserTableName = PRE_ATTENTIONUSER_TABLE_NAME + tableCount;
 

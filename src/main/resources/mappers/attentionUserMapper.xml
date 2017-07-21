@@ -5,11 +5,11 @@
 <mapper namespace="com.xupt.dao.IAttentionUserDao">
 
     <insert id="saveAttentionUser">
-        insert into ${attentionTableName} values(#{attention.from_user_id}, #{attention.to_user_id})
+        INSERT INTO ${attentionUserTableName} values (NULL, #{attention.from_user_id}, #{attention.to_user_id})
     </insert>
 
     <delete id="deleteAttentionById">
-        delete from ${attentionTableName} where to_user_id = #{toUserId} AND from_user_id = #{fromUserId}
+        DELETE FROM ${attentionUserTableName} WHERE to_user_id = #{toUserId} AND from_user_id = #{fromUserId}
     </delete>
 
 </mapper>
