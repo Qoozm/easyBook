@@ -15,7 +15,7 @@ public class Essay implements Serializable {
     private String essay_title;
     private Integer essay_user_id;
     private byte[] essay_content;
-    private Date essay_pubdate;
+    private Date essay_pubDate;
     private Integer essay_visits;
     private Integer essay_thumb;
     private Integer essay_category_id;
@@ -64,12 +64,12 @@ public class Essay implements Serializable {
         this.essay_content = essay_content;
     }
 
-    public Date getEssay_pubdate() {
-        return essay_pubdate;
+    public Date getEssay_pubDate() {
+        return essay_pubDate;
     }
 
-    public void setEssay_pubdate(Date essay_pubdate) {
-        this.essay_pubdate = essay_pubdate;
+    public void setEssay_pubDate(Date essay_pubDate) {
+        this.essay_pubDate = essay_pubDate;
     }
 
     public Integer getEssay_visits() {
@@ -95,9 +95,10 @@ public class Essay implements Serializable {
                 ", essay_title='" + essay_title + '\'' +
                 ", essay_user_id=" + essay_user_id +
                 ", essay_content=" + Arrays.toString(essay_content) +
-                ", essay_pubdate=" + essay_pubdate +
+                ", essay_pubDate=" + essay_pubDate +
                 ", essay_visits=" + essay_visits +
                 ", essay_thumb=" + essay_thumb +
+                ", essay_category_id=" + essay_category_id +
                 '}';
     }
 }

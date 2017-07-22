@@ -11,15 +11,21 @@ import java.util.List;
  */
 public interface ICommentDao {
 
-    public void saveComment(@Param("commentTableName") String commentTableName, @Param("comment") Comment comment);
+    public void saveComment(@Param("commentTableName") String commentTableName,
+                            @Param("comment") Comment comment);
 
-    public void deleteByEssayId(@Param("commentTableName") String commentTableName, @Param("essayId") Integer essayId);
+    public void deleteByEssayId(@Param("commentTableName") String commentTableName,
+                                @Param("essayId") Integer essayId);
 
-    public void deleteByCommentId(@Param("commentTableName") String commentTableName, @Param("commentId") Integer commentId);
+    public void deleteByCommentId(@Param("commentTableName") String commentTableName,
+                                  @Param("commentId") Integer commentId);
 
-    public void deleteByToCommentId(@Param("commentTableName") String commentTableName, @Param("toCommentId") Integer toCommentId);
+    public void deleteByToCommentId(@Param("commentTableName") String commentTableName,
+                                    @Param("toCommentId") Integer toCommentId);
 
-    public List<Comment> findCommentsByEssayId(@Param("commentTableName") String commentTableName, @Param("essay") Essay essay);
+    public List<Comment> findCommentsByEssayId(@Param("commentTableName") String commentTableName,
+                                               @Param("essay") Essay essay);
 
-    public List<Comment> findCommentsByToCommentId(@Param("commentTableName") String commentTableName, @Param("comment") Comment comment);
+    public List<Comment> findCommentsByToCommentId(@Param("commentTableName") String commentTableName,
+                                                   @Param("comment") Comment comment);
 }

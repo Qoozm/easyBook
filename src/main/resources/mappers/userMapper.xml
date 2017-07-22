@@ -5,26 +5,27 @@
 <mapper namespace="com.xupt.dao.IUserDao">
 
     <insert id="saveUser" parameterType="User">
-        INSERT INTO ebuser VALUES (#{user_id}, #{user_phone}, #{user_name}, #{user_email}, #{user_password}, #{user_fans}, #{user_essay_thumb}, #{user_head_icon_path})
+        INSERT INTO ebuser VALUES (#{user_id}, #{user_phone}, #{user_name}, #{user_email}, #{user_password}, #{user_fans}, #{user_essay_thumb}, #{user_head_icon_path},
+                                   #{user_sex}, #{user_description}, #{user_age})
     </insert>
 
     <select id="findAll" resultMap="userResultMap">
         SELECT * FROM ebuser
     </select>
 
-    <select id="findOne" parameterType="integer" resultMap="userResultMap">
+    <select id="findUserById" parameterType="integer" resultMap="userResultMap">
         SELECT * FROM ebuser WHERE user_id = #{userId}
     </select>
 
-    <select id="findOneByPhone" parameterType="string" resultMap="userResultMap">
+    <select id="findUserByPhone" parameterType="string" resultMap="userResultMap">
         SELECT * FROM ebuser WHERE user_phone = #{phone}
     </select>
 
-    <select id="findOneByName" parameterType="string" resultMap="userResultMap">
+    <select id="findUserByName" parameterType="string" resultMap="userResultMap">
         SELECT * FROM ebuser WHERE user_name = #{name}
     </select>
 
-    <select id="findOneByEmail" parameterType="string" resultMap="userResultMap">
+    <select id="findUserByEmail" parameterType="string" resultMap="userResultMap">
         SELECT * FROM ebuser WHERE user_email = #{email}
     </select>
 
@@ -41,6 +42,9 @@
         <result column="user_phone" property="user_phone"/>
         <result column="user_essay_thumb" property="user_essay_thumb"/>
         <result property="user_head_icon_path" column="user_head_icon_path"/>
+        <result property="user_sex" column="user_sex"/>
+        <result property="user_description" column="user_description"/>
+        <result property="user_age" column="user_age"/>
     </resultMap>
 
     <update id="updateUserInfo" parameterType="User">
@@ -48,7 +52,10 @@
                           user_name = #{user_name},
                           user_phone = #{user_phone},
                           user_password = #{user_password},
-                          user_head_icon_path = #{user_head_icon_path}
+                          user_head_icon_path = #{user_head_icon_path},
+                          user_sex = #{user_sex},
+                          user_description = #{user_description},
+                          user_age = #{u}
                       WHERE user_id = #{user_id}
     </update>
 

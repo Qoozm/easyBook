@@ -1,6 +1,7 @@
 package com.xupt.dao;
 
 import com.xupt.bean.Essay;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.Date;
 import java.util.List;
@@ -12,21 +13,25 @@ public interface IEssayDao {
 
     public int save(Essay essay);
 
-    public void deleteById(Integer essay_id);
+    public void deleteEssayById(Integer essay_id);
 
-    public void updateAll(Essay essay);
+    public void updateEssay(Essay essay);
 
-    public void uodateEssayContent(Essay essay);
+    public void updateEssayContent(@Param("essay_content") byte[] essay_content,
+                                   @Param("essay_id") Integer essay_id);
 
-    public void updateEssayTitle(Essay essay);
+    public void updateEssayTitle(@Param("essay_title") String essay_title,
+                                 @Param("essay_id") Integer essay_id);
 
-    public void updateEssayVisits(Essay essay);
+    public void updateEssayVisits(@Param("essay_visits") Integer essay_visits,
+                                  @Param("essay_id") Integer essay_id);
 
-    public void updateEssayThumb(Essay essay);
+    public void updateEssayThumb(@Param("essay_thumb") Integer essay_thumb,
+                                 @Param("essay_id") Integer essay_id);
 
-    public Essay findOneByEssayId(Integer essay_id);
+    public Essay findEssayByEssayId(Integer essay_id);
 
-    public List<Essay> findByEssayCategory(Integer essayCategory);
+    public List<Essay> findEssayByEssayCategory(Integer essayCategory);
 
     public List<Essay> findHotEssayWeek();
 

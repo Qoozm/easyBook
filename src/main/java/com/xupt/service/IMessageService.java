@@ -9,9 +9,11 @@ import java.util.List;
  */
 public interface IMessageService {
 
-    public void saveMessage(Integer message_from_user_id, Integer message_to_user_id, String message_content, String messageType);
+    public int searchWhereToSaveMessage(Integer message_to_user_id);
 
-    public List<Message> getAllMessage(Integer message_from_user_id, Integer message_to_user_id);
+    public void setMessageCategoryMap();
 
-    public boolean isHaveNewMessage(Integer message_to_id);
+    public void saveMessage(Integer message_from_user_id, Integer message_to_user_id, String message_content, Integer messageType);
+
+    public List<Message> sendMessage(Integer message_to_user_id);
 }

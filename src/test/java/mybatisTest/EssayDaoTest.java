@@ -25,7 +25,7 @@ public class EssayDaoTest {
         Essay essay = new Essay();
 
         essay.setEssay_content(new String("qwerieurwr").getBytes());
-        essay.setEssay_pubdate(new Date());
+        essay.setEssay_pubDate(new Date());
         essay.setEssay_thumb(10);
         essay.setEssay_title(new String("王者荣耀"));
         essay.setEssay_visits(10000);

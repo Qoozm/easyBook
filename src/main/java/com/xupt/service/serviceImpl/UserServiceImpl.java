@@ -24,7 +24,7 @@ public class UserServiceImpl implements IUserService {
         String emailReg = "^[A-Za-z0-9\\u4e00-\\u9fa5]+@[a-zA-Z0-9_-]+(\\.[a-zA-Z0-9_-]+)+$";
 
         if (user.getUser_email() != null && user.getUser_name() != null && user.getUser_password() != null && user.getUser_phone() != null) {
-            if (userDao.findOneByName(user.getUser_name()) == null
+            if (userDao.findUserByName(user.getUser_name()) == null
                     && user.getUser_phone().matches(phoneReg)
                     && user.getUser_email().matches(emailReg)) {
 
@@ -44,11 +44,11 @@ public class UserServiceImpl implements IUserService {
         String phoneReg = "^1[3|4|5|8][0-9]\\d{8}$";
 
         if (account.matches(emailReg)) {
-            user = userDao.findOneByEmail(account);
+            user = userDao.findUserByEmail(account);
         }
 
         if (account.matches(phoneReg)) {
-            user = userDao.findOneByPhone(account);
+            user = userDao.findUserByPhone(account);
         }
 
         if (user != null && user.getUser_password().equals(pwd)) {
@@ -62,19 +62,19 @@ public class UserServiceImpl implements IUserService {
 
     public User registerCheckPhone(String phone) {
         User user;
-        user = userDao.findOneByPhone(phone);
+        user = userDao.findUserByPhone(phone);
         return user;
     }
 
     public User registerCheckName(String name) {
         User user;
-        user = userDao.findOneByName(name);
+        user = userDao.findUserByName(name);
         return user;
     }
 
     public User registerCheckEmail(String email) {
         User user;
-        user = userDao.findOneByEmail(email);
+        user = userDao.findUserByEmail(email);
         return user;
     }
 }

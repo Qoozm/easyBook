@@ -17,6 +17,9 @@ public class User implements Serializable {
     private Integer user_fans;
     private Integer user_essay_thumb;
     private String user_head_icon_path;
+    private String user_sex;
+    private String user_description;
+    private Integer user_age;
 
     public User() {
 
@@ -86,6 +89,30 @@ public class User implements Serializable {
         this.user_fans = user_fans;
     }
 
+    public String getUser_sex() {
+        return user_sex;
+    }
+
+    public void setUser_sex(String user_sex) {
+        this.user_sex = user_sex;
+    }
+
+    public String getUser_description() {
+        return user_description;
+    }
+
+    public void setUser_description(String user_description) {
+        this.user_description = user_description;
+    }
+
+    public Integer getUser_age() {
+        return user_age;
+    }
+
+    public void setUser_age(Integer user_age) {
+        this.user_age = user_age;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -97,6 +124,9 @@ public class User implements Serializable {
                 ", user_fans=" + user_fans +
                 ", user_essay_thumb=" + user_essay_thumb +
                 ", user_head_icon_path='" + user_head_icon_path + '\'' +
+                ", user_sex='" + user_sex + '\'' +
+                ", user_description='" + user_description + '\'' +
+                ", user_age=" + user_age +
                 '}';
     }
 }

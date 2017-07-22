@@ -9,7 +9,6 @@ body{
 .L-container .logo{
 	margin-top: 80px;
 	width: 100%;
-	height: 40px;
 	text-align: center;
 }
 
@@ -22,19 +21,16 @@ body{
 	background-color: white;
 }
 .main h4{
-	padding-top: 10px;
+	margin-top: 20px;
 	width: 100%;
 	text-align: center;
 	color: #B0A996;
 }
 .main h4 .sign{
-	margin-top: 10px;
 	font-family: "宋体";
 	font-size: 20px;
 }
 .main h4 .sign a{
-	font-family: "宋体";
-	font-size: 20px;
 	color: #B0A996;
 	text-decoration: none;
 	padding-bottom: 1px;
@@ -47,11 +43,72 @@ body{
 	border-bottom: #EA6F5A solid 2px;
 }
 .main .form1{
-	padding-top: 20px;
+	padding: 30px 0px;
 	width: 100%;
 	text-align: center;
 }
+.form1>div{
+	margin-bottom: 10px;
+}
 .main .form1 .btn-submit{
+	font-size: 18px;
+	color: #FFFFFF;
 	width: 220px;
 	height: 30px;
+	outline: none;
+	background-color: #5CB85C;
+	border: 0px;
+	border-radius: 7px;
+}
+.main .form1 .btn-submit:hover{
+	background-color: #449D44;
+}
+.div-input{
+	height: 30px;
+	width: 200px;
+	outline: none;
+	border: #CCCCCC solid 1px;
+	border-radius: 7px;
+	padding: 0px 10px;
+}
+.div-input:focus{
+	border: #BBBBBB solid 1px;
+	box-shadow: 1px  0px 1px #BBBBBB, /*左边阴影*/  
+    			-1px 0px 1px #BBBBBB, /*右边阴影*/  
+    			0px  1px 1px #BBBBBB, /*顶部阴影*/  
+    			0px -1px 1px #BBBBBB; /*底边阴影*/  
+}
+.code-input{
+	width: 105px;
+}
+.code{
+	margin-left: -15px;
+	height: 30px;
+	width: 70px;
+	outline: none;
+	border: #CCCCCC solid 1px;
+	border-radius: 7px;
+	font-style: oblique;
+}
+.true{
+	display: inline-block;
+	height: 30px;
+	font-size: 20px;
+	line-height: 30px;
+	position: absolute;
+	color: green;
+	display: none;
+}
+.false{
+	display: inline-block;
+	height: 30px;
+	font-size: 20px;
+	line-height: 30px;
+	position: absolute;
+	color: red;
+	display: none;
+}
+.prompt{
+	color: red;
+	visibility: hidden;
 }

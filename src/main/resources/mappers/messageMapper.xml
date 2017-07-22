@@ -4,8 +4,9 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.xupt.dao.IMessageDao">
 
-    <insert id="save" parameterType="com.xupt.bean.Message">
-        insert into ebuser VALUES (NULL,#{message_date},#{message_from_user_id},#{message_to_user_id})
+    <insert id="saveMessage">
+        INSERT INTO ${messageTable} VALUES (NULL, #{message.message_date}, #{message.message_from_user_id}, #{message.message_to_user_id}, #{message.message_type_id},
+                                    #{message.message_status}, #{message.message_content})
     </insert>
 
     <resultMap id="messageResultMap" type="com.xupt.bean.Message">
@@ -13,25 +14,25 @@
         <result column="message_date" property="message_date"/>
         <result column="message_from_user_id" property="message_from_user_id"/>
         <result column="message_to_user_id" property="message_to_user_id"/>
+        <result property="message_type_id" column="message_type_id"/>
+        <result property="message_status" column="message_status"/>
+        <result property="message_content" column="message_content"/>
     </resultMap>
 
-    <select id="findAll" resultMap="messageResultMap">
-            select * from ebmessage
+    <select id="findMessageBySendUserId" resultMap="messageResultMap">
+        SELECT * FROM ${messageTable} WHERE message_from_user_id = #{message_from_user_id}
     </select>
 
-    <select id="findOneById" resultMap="messageResultMap" parameterType="java.lang.Integer">
-        select * from ebuser where user_id = #{user_id}
+    <select id="findMessageNotSend" resultMap="messageResultMap">
+        SELECT * FROM ${messageTable} WHERE message_status = #{message_status} AND message_to_user_id = #{message_to_user_id}
     </select>
 
-    <delete id="deleteById" parameterType="java.lang.Integer">
-        delete * from ebmessage where message_id=#{message_id}
+    <delete id="deleteMessageById">
+        DELETE FROM ${messageTable} WHERE message_id = #{message_id}
     </delete>
 
-    <update id="update" parameterType="com.xupt.bean.Message">
-        update ebmessage SET message_date = #{message_date},
-        message_from_user_id = #{message_from_user_id}
-        message_to_user_id = #{message_to_user_id}
-        where message_id = #{message_id}
+    <update id="updateMessageStatus">
+        UPDATE ${messageTable} SET message_status = #{message_status} WHERE message_id = #{message_id}
     </update>
 
 </mapper>

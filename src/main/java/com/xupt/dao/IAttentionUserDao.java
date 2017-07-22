@@ -8,7 +8,10 @@ import org.apache.ibatis.annotations.Param;
  */
 public interface IAttentionUserDao {
 
-    public void saveAttentionUser(@Param("attentionUserTableName") String attentionUserTableName, @Param("attention") AttentionUser attention);
+    public void saveAttentionUser(@Param("attentionUserTableName") String attentionUserTableName,
+                                  @Param("attention") AttentionUser attention);
 
-    public void deleteAttentionById(@Param("attentionUserTableName") String attentionUserTableName, @Param("toUserId") Integer toUserId, @Param("fromUserId") Integer fromUserId);
+    public void deleteAttentionById(@Param("attentionUserTableName") String attentionUserTableName,
+                                    @Param("toUserId") Integer toUserId,
+                                    @Param("fromUserId") Integer fromUserId);
 }

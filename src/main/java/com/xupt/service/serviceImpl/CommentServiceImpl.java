@@ -1,6 +1,7 @@
 package com.xupt.service.serviceImpl;
 
 import com.xupt.bean.Comment;
+import com.xupt.bean.Message;
 import com.xupt.dao.ICommentDao;
 import com.xupt.service.ICommentService;
 import com.xupt.service.IMessageService;
@@ -37,7 +38,7 @@ public class CommentServiceImpl implements ICommentService {
 
         commentDao.saveComment(commentTableName, comment);
 
-        messageService.saveMessage(comment.getComment_from_user_id(), comment.getComment_to_user_id(), "", "comment");
+        messageService.saveMessage(comment.getComment_from_user_id(), comment.getComment_to_user_id(), "", Message.MessageCategory.get("评论"));
     }
 
     public void deleteCommentByEassy(Integer essayId) {

@@ -1,25 +1,76 @@
 package com.xupt.service.serviceImpl;
 
 import com.xupt.bean.Message;
+import com.xupt.bean.MessageCategory;
+import com.xupt.dao.IMessageCategoryDao;
+import com.xupt.dao.IMessageDao;
 import com.xupt.service.IMessageService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 /**
- * Created by colin on 2017/7/16.
+ * Created by 慧乔乔 on 2017/7/15.
  */
 @Service
 public class MessageServiceImpl implements IMessageService {
-    public void saveMessage(Integer message_from_user_id, Integer message_to_user_id, String message_content, String messageType) {
 
+    private final int MESSAGE_TABLE_COUNT = 5;
+    private String PRE_MESSAGE_TABLE_NAME = "ebmessage_";
+
+    @Autowired
+    private IMessageDao messageDao;
+
+    @Autowired
+    private IMessageCategoryDao categoryDao;
+
+    public int searchWhereToSaveMessage(Integer message_to_user_id) {
+        int result;
+
+        result = message_to_user_id % MESSAGE_TABLE_COUNT;
+
+        return result;
     }
 
-    public List<Message> getAllMessage(Integer message_from_user_id, Integer message_to_user_id) {
-        return null;
+    public void setMessageCategoryMap() {
+
+        Message.MessageCategory.clear();
+        List<MessageCategory> messageCategories = categoryDao.findAllMessageCategory();
+
+        for (MessageCategory messageCategory : messageCategories) {
+            Message.MessageCategory.put(messageCategory.getCategory_message_type(), messageCategory.getCategory_message_id());
+        }
     }
 
-    public boolean isHaveNewMessage(Integer message_to_id) {
-        return false;
+    //当前用户每次接受到一个消息，都调用该方法将消息的状态设置为未发送的状态并将其保存到数据库中
+    public void saveMessage(Integer message_from_user_id,
+                            Integer message_to_user_id,
+                            String message_content,
+                            Integer messageType) {
+
+        int tableCount = searchWhereToSaveMessage(message_to_user_id);
+        String messageTableName = PRE_MESSAGE_TABLE_NAME + tableCount;
+
+        Message message = new Message();
+        message.setMessage_content(message_content);
+        message.setMessage_date(new Date());
+        message.setMessage_from_user_id(message_from_user_id);
+        message.setMessage_to_user_id(message_to_user_id);
+        message.setMessage_status(Message.NOT_SEND_MESSAGE);
+        message.setMessage_type_id(messageType);
+
+        messageDao.saveMessage(messageTableName, message);
+    }
+
+    //找到用户所有未投递的信息
+    public List<Message> sendMessage(Integer message_to_user_id) {
+
+        int tableCount = searchWhereToSaveMessage(message_to_user_id);
+        String messageTableName = PRE_MESSAGE_TABLE_NAME + tableCount;
+
+        List<Message> messages = messageDao.findMessageNotSend(messageTableName, message_to_user_id, Message.NOT_SEND_MESSAGE);
+        return messages;
     }
 }

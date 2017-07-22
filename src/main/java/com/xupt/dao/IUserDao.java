@@ -20,13 +20,13 @@ public interface IUserDao {
 
     public List<User> findAll();
 
-    public User findOne(Integer userId);
+    public User findUserById(Integer userId);
 
-    public User findOneByPhone(String phone);
+    public User findUserByPhone(String phone);
 
-    public User findOneByName(String name);
+    public User findUserByName(String name);
 
-    public User findOneByEmail(String email);
+    public User findUserByEmail(String email);
 
     public List<User> findHotUsersByEssayThumb();
 }
