@@ -70,15 +70,4 @@
         </tx:attributes>
     </tx:advice>-->
 
-    <!-- 处理mysql数据库连接的异常 -->
-    <!--<aop:aspectj-autoproxy/>-->
-
-    <aop:config>
-        <aop:aspect ref="userDaoAspect">
-            <aop:pointcut id="userServicePointcut" expression="execution(* com.xupt.service.IUserService.register(..))"/>
-
-            <aop:after-throwing pointcut-ref="userServicePointcut" method="afterRepetition" throwing="dex"/>
-        </aop:aspect>
-    </aop:config>
-
 </beans>
