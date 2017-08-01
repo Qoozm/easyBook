@@ -42,13 +42,14 @@ public class MessageServiceImpl implements IMessageService {
         for (MessageCategory messageCategory : messageCategories) {
             Message.MessageCategory.put(messageCategory.getCategory_message_type(), messageCategory.getCategory_message_id());
         }
+
     }
 
     //当前用户每次接受到一个消息，都调用该方法将消息的状态设置为未发送的状态并将其保存到数据库中
     public void saveMessage(Integer message_from_user_id,
                             Integer message_to_user_id,
                             String message_content,
-                            Integer messageType) {
+                            Integer messageTypeId) {
 
         int tableCount = searchWhereToSaveMessage(message_to_user_id);
         String messageTableName = PRE_MESSAGE_TABLE_NAME + tableCount;
@@ -59,7 +60,7 @@ public class MessageServiceImpl implements IMessageService {
         message.setMessage_from_user_id(message_from_user_id);
         message.setMessage_to_user_id(message_to_user_id);
         message.setMessage_status(Message.NOT_SEND_MESSAGE);
-        message.setMessage_type_id(messageType);
+        message.setMessage_type_id(messageTypeId);
 
         messageDao.saveMessage(messageTableName, message);
     }

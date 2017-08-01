@@ -12,7 +12,7 @@ public class CollectionEssayServiceImpl implements ICollectionEssayService {
     private String PRE_COLLECTION_ESSAY_TABLE_NAME = "ebcollention_essay_";
 
     @Autowired
-    ICollectionEssayDao collectionEssayDao;
+    private ICollectionEssayDao collectionEssayDao;
 
     public int searchWhereToSaveCollectionEssay(Integer user_id) {
         int result;

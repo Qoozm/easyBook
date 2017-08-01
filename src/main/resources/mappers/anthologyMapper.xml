@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xupt.dao.IAnthologyDao">
+    <insert id="saveAnthology">
+        INSERT INTO ${anthologyTableName} (anthology_id, anthology_name, anthology_user_id) VALUES
+                                          (#{anthology.anthology_id}, #{anthology.anthology_name},
+                                                  #{anthology.anthology_user_id})
+    </insert>
+
+    <select id="findUserAnthology" resultMap="anthologyMap">
+        SELECT * FROM ${anthologyTableName} WHERE anthology_user_id = #{anthology_user_id}
+    </select>
+
+    <resultMap id="anthologyMap" type="Anthology">
+        <result property="anthology_essay_number" column="anthology_essay_number"/>
+        <result property="anthology_id" column="anthology_id"/>
+        <result property="anthology_name" column="anthology_name"/>
+        <result property="anthology_user_id" column="anthology_user_id"/>
+    </resultMap>
+</mapper>

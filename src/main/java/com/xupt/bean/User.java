@@ -20,9 +20,18 @@ public class User implements Serializable {
     private String user_sex;
     private String user_description;
     private Integer user_age;
+    private Integer user_essay_number;
 
     public User() {
 
+    }
+
+    public Integer getUser_essay_number() {
+        return user_essay_number;
+    }
+
+    public void setUser_essay_number(Integer user_essay_number) {
+        this.user_essay_number = user_essay_number;
     }
 
     public String getUser_head_icon_path() {
@@ -127,6 +136,7 @@ public class User implements Serializable {
                 ", user_sex='" + user_sex + '\'' +
                 ", user_description='" + user_description + '\'' +
                 ", user_age=" + user_age +
+                ", user_essay_number=" + user_essay_number +
                 '}';
     }
 }

@@ -13,8 +13,10 @@ import java.util.List;
  */
 @Service
 public class MessageCategoryServiceImpl implements IMessageCategoryService {
+
     @Autowired
-    IMessageCategoryDao messageCategoryDao;
+    private IMessageCategoryDao messageCategoryDao;
+
     public void save(MessageCategory messageCategory) {
 
     }

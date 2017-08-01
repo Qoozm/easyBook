@@ -4,8 +4,9 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.xupt.dao.IUserDao">
 
-    <insert id="saveUser" parameterType="User">
-        INSERT INTO ebuser VALUES (#{user_id}, #{user_phone}, #{user_name}, #{user_email}, #{user_password}, #{user_fans}, #{user_essay_thumb}, #{user_head_icon_path},
+    <insert id="saveUser" parameterType="User" useGeneratedKeys="true" keyProperty="user_id">
+        INSERT INTO ebuser (user_phone, user_name, user_email, user_password, user_head_icon_path, user_sex, user_description, user_age)
+                    VALUES (#{user_phone}, #{user_name}, #{user_email}, #{user_password}, #{user_head_icon_path},
                                    #{user_sex}, #{user_description}, #{user_age})
     </insert>
 
@@ -29,8 +30,8 @@
         SELECT * FROM ebuser WHERE user_email = #{email}
     </select>
 
-    <select id="findHotUsersByEssayThumb" resultMap="userResultMap">
-        SELECT * FROM ebuser ORDER BY user_essay_thumb DESC
+    <select id="findHotUser" resultMap="userResultMap">
+        SELECT * FROM ebuser ORDER BY user_essay_thumb DESC, user_essay_number DESC
     </select>
 
     <resultMap id="userResultMap" type="User">
@@ -45,6 +46,7 @@
         <result property="user_sex" column="user_sex"/>
         <result property="user_description" column="user_description"/>
         <result property="user_age" column="user_age"/>
+        <result property="user_essay_number" column="user_essay_number"/>
     </resultMap>
 
     <update id="updateUserInfo" parameterType="User">
@@ -55,7 +57,7 @@
                           user_head_icon_path = #{user_head_icon_path},
                           user_sex = #{user_sex},
                           user_description = #{user_description},
-                          user_age = #{u}
+                          user_age = #{user_age}
                       WHERE user_id = #{user_id}
     </update>
 

@@ -1,84 +1,88 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: colin
-  Date: 2017/7/15
-  Time: 22:47
-  To change this template use File | Settings | File Templates.
---%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page contentType="text/html;charset=UTF-8" %>
 <!DOCTYPE html>
 <html>
 <head>
     <title>注册-EasyBook</title>
-    <link rel="stylesheet" href="/static/css/bootstrap.min.css"/>
-    <link rel="stylesheet" href="/static/css/public.css"/>
-    <link rel="stylesheet" href="/static/css/sign.css"/>
+    <link rel="stylesheet" href="../../static/css/public.css" />
+    <link rel="stylesheet" href="../../static/css/sign.css" />
 </head>
 <body>
 <div class="L-container">
     <!--LOGO-->
     <div class="logo">
-        <a href="#">
-            <img src="#"/>
+        <a href="<c:url value="/"/>">
+            <img src="../../static/img/logo.png" />
         </a>
     </div>
     <!--注册模块-->
     <div class="main">
         <h4>
             <div class="sign">
-                <a class="sign-in " href="/loginUI">登录</a>
+                <a class="sign-in " href="<c:url value="/loginUI"/>">登录</a>
                 <b>·</b>
-                <a class="sign-up on" href="/registerUI">注册</a>
+                <a class="sign-up on" href="<c:url value="/registerUI"/>">注册</a>
             </div>
         </h4>
         <!--表单提交，需要提交的位置-->
-        <form class="form1" action="/register" method="post" onsubmit="return checkNone()">
+        <form class="form1" action="<c:url value="/register"/>" method="post" onsubmit="return checkNone()">
             <div>
-                <input id="userName" name="user_name" class="text-left" type="text" placeholder="昵称"/>
+                <input id="user_name" name="user_name" class="div-input" placeholder="昵称"/>
             </div>
             <div>
-                <input id="phone" name="user_phone" class="text-left" type="text" placeholder="手机号"/>
+                <input id="user_phone" name="user_phone" class="div-input" placeholder="手机号"/>
             </div>
             <div>
-                <input id="email" name="user_email" class="text-left" type="email" placeholder="邮箱"/>
+                <input id="user_email" name="user_email" class="div-input" type="email" placeholder="邮箱"/>
             </div>
             <div>
-                <input id="psword" name="user_password" class="text-left" type="password" placeholder="密码"/>
+                <input id="user_password" name="user_password" class="div-input" class="text-left" type="password" placeholder="密码"/>
             </div>
             <div>
-                <input class="btn btn-success btn-submit" type="submit" value="注册"/>
+            	<input class="code" type="button" />
+            	<input class="div-input code-input" placeholder="请输入验证码"/>
+            	<span class="true">√</span>
+            	<span class="false">×</span>
+            </div>
+            <div>
+                <input class="btn-submit" type="submit" value="注册"/>
             </div>
         </form>
     </div>
 </div>
 
-<script type="text/javascript" src="/static/js/jquery-3.1.0.min.js"></script>
+<script type="text/javascript" src="../../static/js/jquery-3.1.0.min.js" ></script>
+<script type="text/javascript" src="../../static/js/code.js" ></script>
 <script>
-    var userName = document.getElementById("userName");
-    var phone = document.getElementById("phone");
-    var email = document.getElementById("email");
-    var psword = document.getElementById("psword");
+    var userName = document.getElementById("user_name");
+    var phone = document.getElementById("user_phone");
+    var email = document.getElementById("user_email");
+    var psword = document.getElementById("user_password");
 
     function init() {
+    	Code.createCode();	//开始生产验证码
+        Code.codeInit();	//初始化验证码空能
         check();
     }
     //验证昵称手机号邮箱的正确性
     function check() {
-        console.log(userName);
-        console.log(phone);
-        console.log(email);
         userName.onblur = checkName;
         phone.onblur = checkPhone;
         email.onblur = checkEmail;
     }
-    //验证提交时数据是否为空
+    //验证提交时数据是否可以提交
     function checkNone() {
-        //只要有一项为空返回false
-        if (userName.value == "" || phone.value == "" || email.value == "" || psword.value == "") {
-            alert("请输入完整信息！！！");
-            return false;
+    	//判断是否输入了验证码
+        if(Code.flag){
+        	//只要有一项为空返回false
+        	if (userName.value == "" || phone.value == "" || email.value == "" || psword.value == "") {
+	            alert("请输入完整信息！！！");
+	            return false;
+	        }
+	        return true;
+        }else{
+        	return false
         }
-        return true;
     }
     //验证昵称
     function checkName() {
@@ -91,17 +95,17 @@
             //后台数据交互验证昵称码是否重复
             $.ajax({
                 type: "post",
-                url: '/register/checkname',	//servlet路径
+                url: '/register/checkName',	//servlet路径
                 async: true,
                 dataType: 'json',
                 contentType: 'application/json',
-                data: JSON.stringify({userName: userName.value}),
+                data: JSON.stringify({user_name: userName.value}),
                 success: function (data) {
                     if (data.result) {	//返回true表示昵称不重复
 
                     } else {
                         userName.style.borderColor = "red";
-                        userName.value = ""
+                        userName.value = "";
                         userName.placeholder = "昵称已注册";
                     }
                 },
@@ -126,11 +130,11 @@
             //后台数据交互验证手机号码是否重复
             $.ajax({
                 type: "post",
-                url: '/register/checkphone',	//servlet路径
+                url: '/register/checkPhone',	//servlet路径
                 async: true,
                 dataType: 'json',
                 contentType: 'application/json',
-                data: JSON.stringify({phone: phone.value}),
+                data: JSON.stringify({user_phone: phone.value}),
                 success: function (data) {
                     if (data.result) {	//返回true表示电话号码不重复
 
@@ -149,7 +153,7 @@
     //验证邮箱
     function checkEmail() {
         //验证邮箱正则表达式
-        var pattern = /^[a-zA-Z1-9]+\w*@[a-zA-Z]{1,5}.[a-zA-Z]{2,5}$/
+        var pattern = /^[a-zA-Z1-9]+\w*@[a-zA-Z]{1,5}.[a-zA-Z]{2,5}$/;
         if (!pattern.test(email.value)) {
             email.style.borderColor = "red";
             email.value = "";
@@ -160,11 +164,11 @@
             //后台数据交互，验证邮箱是否重复
             $.ajax({
                 type: "post",
-                url: '/register/checkemail',	//servlet路径
+                url: '/register/checkEmail',	//servlet路径
                 async: true,
                 dataType: 'json',
                 contentType: 'application/json',
-                data: JSON.stringify({email: email.value}),
+                data: JSON.stringify({user_email: email.value}),
                 success: function (data) {
                     if (data.result) {	//返回true表示邮箱不重复
 
@@ -179,7 +183,7 @@
                 }
             });
         }
-    }
+   }
     init();
 </script>
 

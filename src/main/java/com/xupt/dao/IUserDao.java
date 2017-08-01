@@ -28,5 +28,5 @@ public interface IUserDao {
 
     public User findUserByEmail(String email);
 
-    public List<User> findHotUsersByEssayThumb();
+    public List<User> findHotUser();
 }

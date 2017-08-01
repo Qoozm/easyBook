@@ -1,6 +1,7 @@
 package com.xupt.controller;
 
 import com.xupt.bean.User;
+import com.xupt.service.IAnthologyService;
 import com.xupt.service.IUserService;
 import com.xupt.utils.MD5;
 import org.json.JSONObject;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -22,24 +24,36 @@ import java.util.Map;
 @Controller
 public class UserController {
 
+    private String DEFAULT_USER_HEAD_PICTURE_PATH = "/static/img/user.png";
+
+    private IUserService userService;
+
+    private IAnthologyService anthologyService;
+
     @Autowired
-    IUserService userService;
+    public UserController(IUserService userService, IAnthologyService anthologyService) {
+        this.userService = userService;
+        this.anthologyService = anthologyService;
+    }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public ModelAndView login(@RequestParam("account") String account, @RequestParam("password") String password, @RequestParam(value = "remeberme", required = false) String remeberme, HttpSession session,
-                                HttpServletResponse response) {
+    public String login(@RequestParam("user_account") String user_account, @RequestParam("user_password") String user_password,
+                        @RequestParam(value = "rememberMe", required = false) String rememberMe,
+                        HttpSession session,
+                        HttpServletResponse response,
+                        RedirectAttributes model) {
 
-        password = MD5.encoderByMd5(password);
-        User user = userService.loginCheck(account, password);
+        user_password = MD5.encoderByMd5(user_password);
+        User user = userService.loginCheck(user_account, user_password);
 
         if (user != null) {
 
             session.setAttribute("user", user);
 
-            if (remeberme != null && remeberme.equals("1")) {
-                Cookie accountCookie = new Cookie("4", account);
+            if (rememberMe != null && rememberMe.equals("1")) {
+                Cookie accountCookie = new Cookie("4", user_account);
 
-                Cookie passwordCookie = new Cookie("1", password);
+                Cookie passwordCookie = new Cookie("1", user_password);
 
                 Cookie cookie1 = new Cookie("2", MD5.encoderByMd5("54321"));
                 cookie1.setPath("/");
@@ -70,14 +84,16 @@ public class UserController {
                 response.addCookie(accountCookie);
                 response.addCookie(passwordCookie);
             }
-            return new ModelAndView("redirect:/index.jsp");
+            return "redirect:/";
         }
 
-        return new ModelAndView("sign_in");
+        String result = "账号或密码错误！";
+        model.addFlashAttribute("result", result);
+        return "redirect:/loginUI";
     }
 
-    @RequestMapping(value = "/loginout", method = RequestMethod.GET)
-    public ModelAndView loginout(HttpSession session, HttpServletRequest request, HttpServletResponse response) {
+    @RequestMapping(value = "/loginOut", method = RequestMethod.GET)
+    public ModelAndView loginOut(HttpSession session, HttpServletRequest request, HttpServletResponse response) {
 
         if (session.getAttribute("user") != null) {
 
@@ -93,7 +109,7 @@ public class UserController {
                 response.addCookie(cookie);
             }
         }
-        return new ModelAndView("redirect:/index.jsp");
+        return new ModelAndView("redirect:/");
     }
 
     @RequestMapping(value = "/loginUI", method = RequestMethod.GET)
@@ -107,22 +123,33 @@ public class UserController {
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public ModelAndView register(User user) {
+    public String register(User user, RedirectAttributes model) {
 
-        user.setUser_fans(0);
-        user.setUser_essay_thumb(0);
         user.setUser_password(MD5.encoderByMd5(user.getUser_password()));
+        user.setUser_head_icon_path(DEFAULT_USER_HEAD_PICTURE_PATH);
 
         boolean result = userService.register(user);
-        return new ModelAndView("sign_in", "result", result);
+
+        String message;
+
+        if (result) {
+            message = "注册成功";
+            anthologyService.initUserAnthology(user.getUser_id());
+            model.addAttribute("result", message);
+            return "sign_in";
+        } else {
+            message = "注册失败";
+            model.addFlashAttribute("result", message);
+            return "redirect:/registerUI";
+        }
     }
 
-    @RequestMapping(value = "/register/checkphone", method = RequestMethod.POST)
+    @RequestMapping(value = "/register/checkPhone", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> registerCheckPhone(@RequestBody String phone) {
 
         JSONObject jsonObject = new JSONObject(phone);
-        phone = jsonObject.get("phone").toString();
+        phone = jsonObject.get("user_phone").toString();
 
         boolean result = false;
         if (null == userService.registerCheckPhone(phone)) {
@@ -135,12 +162,12 @@ public class UserController {
         return resultMap;
     }
 
-    @RequestMapping(value = "/register/checkname", method = RequestMethod.POST)
+    @RequestMapping(value = "/register/checkName", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> registerCheckName(@RequestBody String name) {
 
         boolean result = false;
-        name = new JSONObject(name).getString("userName");
+        name = new JSONObject(name).getString("user_name");
 
         if (userService.registerCheckName(name) == null) {
             result = true;
@@ -152,13 +179,13 @@ public class UserController {
         return resultMap;
     }
 
-    @RequestMapping(value = "/register/checkemail", method = RequestMethod.POST)
+    @RequestMapping(value = "/register/checkEmail", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> registerCheckEmail(@RequestBody String email) {
 
         boolean result = false;
 
-        email = new JSONObject(email).getString("email");
+        email = new JSONObject(email).getString("user_email");
 
         if (userService.registerCheckEmail(email) == null) {
             result = true;

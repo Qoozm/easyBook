@@ -18,7 +18,10 @@ nav{
 nav>.left{
 	display: inline-block;
 }
-
+nav>.left>a>img{
+	height: 60px;
+	width: 76px;
+}
 nav>.center{
 	display: inline-block;
 	margin-left: 100px;
@@ -41,9 +44,7 @@ nav>.center>ul>li>.active{
 	color: #EC6149;
 }
 nav>.center>ul>li>.find{
-	/*height: 60px;
-	width: 250px;
-	line-height: 60px;*/
+
 }
 nav>.center>ul>li>.find>input{
 	height: 30px;
@@ -86,7 +87,7 @@ nav>.right>ul>li>.write{
 	margin-left: 20px;
 	font-family: "仿宋";
 	font-size: 25px;
-	font-weight: 700px;
+	font-weight: 700;
 	border: 0px;
 	border-radius: 5px;
 	text-align: center;
@@ -138,7 +139,7 @@ nav>.right>ul>li>.sign-up{
 #message-list>li>a{
 	font-family: "仿宋";
 	font-size: 20px;
-	font-weight: 500px;
+	font-weight: 500;
 	color: #262626;
 	display: inline-block;
 	height: 35px;
@@ -161,7 +162,7 @@ nav>.right>ul>li>.sign-up{
 #userInfo>li>a{
 	font-family: "仿宋";
 	font-size: 20px;
-	font-weight: 500px;
+	font-weight: 500;
 	color: #262626;
 	display: inline-block;
 	height: 35px;

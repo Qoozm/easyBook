@@ -1,7 +1,5 @@
 package com.xupt.bean;
 
-import org.springframework.stereotype.Component;
-
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Date;
@@ -19,9 +17,18 @@ public class Essay implements Serializable {
     private Integer essay_visits;
     private Integer essay_thumb;
     private Integer essay_category_id;
+    private Integer essay_anthology_id;
 
     public Essay() {
 
+    }
+
+    public Integer getEssay_anthology_id() {
+        return essay_anthology_id;
+    }
+
+    public void setEssay_anthology_id(Integer essay_anthology_id) {
+        this.essay_anthology_id = essay_anthology_id;
     }
 
     public Integer getEssay_category_id() {
@@ -99,6 +106,7 @@ public class Essay implements Serializable {
                 ", essay_visits=" + essay_visits +
                 ", essay_thumb=" + essay_thumb +
                 ", essay_category_id=" + essay_category_id +
+                ", essay_anthology_id=" + essay_anthology_id +
                 '}';
     }
 }

@@ -6,6 +6,8 @@ import com.xupt.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * Created by colin on 2017/7/14.
  */
@@ -13,7 +15,7 @@ import org.springframework.stereotype.Service;
 public class UserServiceImpl implements IUserService {
 
     @Autowired
-    IUserDao userDao;
+    private IUserDao userDao;
 
     public boolean register(User user) {
 
@@ -76,5 +78,12 @@ public class UserServiceImpl implements IUserService {
         User user;
         user = userDao.findUserByEmail(email);
         return user;
+    }
+
+    public List<User> loadHotAuthor() {
+
+        List<User> users = userDao.findHotUser();
+
+        return users;
     }
 }

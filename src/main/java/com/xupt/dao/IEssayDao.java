@@ -3,7 +3,6 @@ package com.xupt.dao;
 import com.xupt.bean.Essay;
 import org.apache.ibatis.annotations.Param;
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -38,6 +37,10 @@ public interface IEssayDao {
     public List<Essay> findHotEssayMonth();
 
     public List<Essay> findEssayByUserId(Integer userId);
+
+    public List<Essay> findEssayHomePage();
+
+    public List<Essay> findUserAnthologyEssayInfo(Integer essay_anthology_id);
 
     public List<Essay> findAll();
 }

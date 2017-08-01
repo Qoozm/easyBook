@@ -1,7 +1,6 @@
 package com.xupt.service;
 
 import com.xupt.bean.User;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
@@ -19,4 +18,6 @@ public interface IUserService {
     public User registerCheckName(String name);
 
     public User registerCheckEmail(String email);
+
+    public List<User> loadHotAuthor();
 }

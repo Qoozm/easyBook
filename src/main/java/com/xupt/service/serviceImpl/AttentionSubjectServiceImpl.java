@@ -15,7 +15,7 @@ public class AttentionSubjectServiceImpl implements IAttentionSubjectService {
     private String PRE_ATTENTION_SUBJECT_TABLE_NAME = "ebattention_subject_";
 
     @Autowired
-    IAttentionSubjectDao attentionSubjectDao;
+    private IAttentionSubjectDao attentionSubjectDao;
 
     public int searchWhereToSaveAttentionSubject(Integer from_user_id) {
         int result;

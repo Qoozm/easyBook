@@ -18,7 +18,7 @@ public class AttentionUserServiceImpl implements IAttentionUserService {
     private final int ATTENTION_USER_TABLE_COUNT = 5;
 
     @Autowired
-    IAttentionUserDao attentionUserDao;
+    private IAttentionUserDao attentionUserDao;
 
     @Autowired
     IUserDao userDao;

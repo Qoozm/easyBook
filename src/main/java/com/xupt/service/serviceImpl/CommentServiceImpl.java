@@ -18,10 +18,10 @@ public class CommentServiceImpl implements ICommentService {
     private String PER_COMMENT_TABLE_NAME = "ebcomment_";
 
     @Autowired
-    ICommentDao commentDao;
+    private ICommentDao commentDao;
 
     @Autowired
-    IMessageService messageService;
+    private IMessageService messageService;
 
     public int searchWhereToSaveComment(Integer essayId) {
         int result;

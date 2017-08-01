@@ -117,6 +117,7 @@
       <version>20160810</version>
     </dependency>
 
+    <!-- jackson 包-->
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-core</artifactId>

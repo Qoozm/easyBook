@@ -1,7 +1,6 @@
 .essay-list{
 	width: 100%;
 	background-color: #FFFFFF;
-	
 }
 .essay-list>li{
 	list-style: none;
@@ -9,17 +8,21 @@
 .essay-list>.essay-li{
 	border-top: #CCCCCC solid 1px;
 	height: 150px;
+	width: 100%;
 	margin: 10px 0px;
 }
-.essay-list>.essay-li>a>img{
+.essay-list>.essay-li>a{
+	display: inline-block;
 	float: right;
+}
+.essay-list>.essay-li>a>img{
 	height: 120px;
 	width: 150px;
 	margin-top: 15px;
 }
 .essay-list>.essay-li>.essay-div{
 	float: left;
-	width: 400px;
+	width: 450px;
 	margin-top: 5px;
 }
 .essay-div>.author>a{
