@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xupt.dao.IEssaySubjectDao">
+
+    <insert id="saveEssaySubjectDao">
+        INSERT INTO ebessay_subject VALUES (NULL, #{essay_subject_type})
+    </insert>
+
+    <select id="findAllEssaySubject" resultMap="essaySubjectMap">
+        SELECT * FROM ebessay_subject
+    </select>
+
+    <select id="findHotEssaySubject" resultMap="essaySubjectMap">
+        SELECT * FROM ebessay_subject ORDER BY essay_subject_attention DESC, essay_subject_number DESC LIMIT 0,10
+    </select>
+
+    <resultMap id="essaySubjectMap" type="EssaySubject">
+        <result property="essay_subject_attention" column="essay_subject_attention"/>
+        <result property="essay_subject_describe" column="essay_subject_describe"/>
+        <result property="essay_subject_id" column="essay_subject_id"/>
+        <result property="essay_subject_number" column="essay_subject_number"/>
+        <result property="essay_subject_picture" column="essay_subject_picture"/>
+        <result property="essay_subject_type" column="essay_subject_type"/>
+        <result property="essay_subject_user_id" column="essay_subject_user_id"/>
+    </resultMap>
+</mapper>

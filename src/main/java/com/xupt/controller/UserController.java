@@ -7,6 +7,7 @@ import com.xupt.utils.MD5;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -26,9 +27,9 @@ public class UserController {
 
     private String DEFAULT_USER_HEAD_PICTURE_PATH = "/static/img/user.png";
 
-    private IUserService userService;
+    private final IUserService userService;
 
-    private IAnthologyService anthologyService;
+    private final IAnthologyService anthologyService;
 
     @Autowired
     public UserController(IUserService userService, IAnthologyService anthologyService) {
@@ -123,7 +124,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public String register(User user, RedirectAttributes model) {
+    public String register(RedirectAttributes model, User user) {
 
         user.setUser_password(MD5.encoderByMd5(user.getUser_password()));
         user.setUser_head_icon_path(DEFAULT_USER_HEAD_PICTURE_PATH);
@@ -135,8 +136,8 @@ public class UserController {
         if (result) {
             message = "注册成功";
             anthologyService.initUserAnthology(user.getUser_id());
-            model.addAttribute("result", message);
-            return "sign_in";
+            model.addFlashAttribute("result", message);
+            return "redirect:/loginUI";
         } else {
             message = "注册失败";
             model.addFlashAttribute("result", message);

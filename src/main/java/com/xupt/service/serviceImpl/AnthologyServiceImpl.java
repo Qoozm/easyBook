@@ -45,7 +45,7 @@ public class AnthologyServiceImpl implements IAnthologyService {
         anthologyDao.saveAnthology(tableName, anthology);
     }
 
-    public List<Anthology> loadAnthology(Integer anthology_user_id) {
+    public List<Anthology> searchAnthologyByUserId(Integer anthology_user_id) {
         int tableCount = anthology_user_id % ANTHOLOGY_TABLE_COUNT;
         String tableName = PRE_ANTHOLOGY_TABLE_NAME + tableCount;
 

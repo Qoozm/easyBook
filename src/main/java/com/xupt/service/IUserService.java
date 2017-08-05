@@ -20,4 +20,6 @@ public interface IUserService {
     public User registerCheckEmail(String email);
 
     public List<User> loadHotAuthor();
+
+    public User searchUserById(Integer user_id);
 }

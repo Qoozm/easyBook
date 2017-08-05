@@ -72,16 +72,15 @@
     }
     //验证提交时数据是否可以提交
     function checkNone() {
-    	//判断是否输入了验证码
-        if(Code.flag){
-        	//只要有一项为空返回false
-        	if (userName.value == "" || phone.value == "" || email.value == "" || psword.value == "") {
-	            alert("请输入完整信息！！！");
-	            return false;
-	        }
-	        return true;
+        //判断是否输入了验证码
+        if (userName.value == "" || phone.value == "" || email.value == "" || psword.value == "") {
+            alert("请输入完整信息！！！");
+            return false;
+        }else if(Code.flag){
+            return true;
         }else{
-        	return false
+            alert("请输入完整信息！！！");
+            return false;
         }
     }
     //验证昵称

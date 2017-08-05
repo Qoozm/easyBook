@@ -5,20 +5,24 @@
 <mapper namespace="com.xupt.dao.IEssayDao">
 
     <insert id="save" parameterType="com.xupt.bean.Essay" useGeneratedKeys="true" keyProperty="essay_id">
-        insert into ebessay VALUES (NULL, #{essay_title}, #{essay_user_id}, #{essay_content}, #{essay_pubDate},
-                                    #{essay_visits}, #{essay_thumb}, #{essay_category_id}, #{essay_anthology_id})
+        insert into ebessay (essay_title, essay_user_id, essay_content_path, essay_pubDate,
+                            essay_category_id, essay_anthology_id, essay_photo_path)
+                            VALUES (#{essay_title}, #{essay_user_id}, #{essay_content_path}, #{essay_pubDate},
+                            #{essay_category_id}, #{essay_anthology_id},
+                            #{essay_photo_path})
     </insert>
     
     <resultMap id="essayResultMap" type="com.xupt.bean.Essay">
         <result column="essay_id" property="essay_id"/>
         <result column="essay_title" property="essay_title"/>
         <result column="essay_user_id" property="essay_user_id"/>
-        <result column="essay_content" property="essay_content"/>
+        <result column="essay_content_path" property="essay_content_path"/>
         <result column="essay_pubDate" property="essay_pubDate"/>
         <result column="essay_visits" property="essay_visits"/>
         <result column="essay_thumb" property="essay_thumb"/>
         <result property="essay_category_id" column="essay_category_id"/>
         <result property="essay_anthology_id" column="essay_anthology_id"/>
+        <result property="essay_photo_path" column="essay_photo_path"/>
     </resultMap>
 
     <select id="findAll" resultMap="essayResultMap">
@@ -29,7 +33,7 @@
         select * from ebessay where essay_id = #{essay_id}
     </select>
 
-    <select id="findEssayByEssayCategory" parameterType="Integer" resultMap="essayResultMap">
+    <select id="findEssayByEssaySubject" parameterType="Integer" resultMap="essayResultMap">
         SELECT * FROM ebessay WHERE essay_category_id = #{essayCategory}
     </select>
 
@@ -53,6 +57,10 @@
         SELECT essay_id, essay_title FROM ebessay WHERE essay_anthology_id = #{essay_anthology_id}
     </select>
 
+    <select id="findWheelPhoto" resultMap="essayResultMap">
+        SELECT * FROM ebessay ORDER BY essay_visits DESC LIMIT 0,6
+    </select>
+
     <delete id="deleteEssayById" parameterType="java.lang.Integer">
         delete from ebessay where essay_id = #{essay_id}
     </delete>
@@ -60,7 +68,7 @@
     <update id="updateEssay" parameterType="com.xupt.bean.Essay">
         update ebessay SET essay_title = #{essay_title},
                             essay_user_id = #{essay_user_id},
-                            essay_content = #{essay_content},
+                            essay_content_path = #{essay_content_path},
                             essay_pubDate = #{essay_pubDate},
                             essay_visits = #{essay_visits},
                             essay_thumb = #{essay_thumb},

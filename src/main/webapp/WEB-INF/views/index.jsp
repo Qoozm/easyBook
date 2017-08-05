@@ -6,7 +6,7 @@
   Time: 14:47
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" isELIgnored="false" %>
+<%@ page contentType="text/html;charset=UTF-8" isELIgnored="false" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -204,6 +204,19 @@
             font-size: 14px;
             color: #BBBBBB;
         }
+
+        .trade {
+            position: absolute;
+            display: inline-block;
+            cursor: pointer;
+            right: 0px;
+            font-size: 15px;
+            color: #AAAAAA;
+        }
+
+        .trade:hover {
+            color: #CCCCCC;
+        }
     </style>
 
 </head>
@@ -258,7 +271,7 @@
                 </ul>
             </li>
             <li>
-                <a class="write" href="<c:url value="/writeEssay"/>">写文章</a>
+                <a class="write" href="<c:url value="/writeEssay"/>" target="_blank">写文章</a>
             </li>
         </ul>
     </div>
@@ -324,8 +337,8 @@
             <div class="essayType">
 
                 <%--<a class="type-div" href="">--%>
-                    <%--<img src="../../static/img/essayType/book.png"/>--%>
-                    <%--<span>书单</span>--%>
+                <%--<img src="../../static/img/essayType/book.png"/>--%>
+                <%--<span>书单</span>--%>
                 <%--</a>--%>
 
             </div>
@@ -375,6 +388,7 @@
             <div class="author">
                 <div>
                     <span>推荐作者</span>
+                    <a class="trade">换一换</a>
                 </div>
                 <ul class="author-list">
                     <!--
@@ -408,8 +422,9 @@
         getEssayType();	//获取专题
         getEssayPhoto();//获取点赞数前6
         getEssay();		//获取所有文章
-        getAuthor();    //推荐作者
+        getAuthor(1);    //推荐作者
         setUserPhoto();
+        tradeEvent();
     };
 
     function setUserPhoto() {
@@ -486,7 +501,7 @@
     function getEssayPhoto() {
         $.ajax({
             type: "get",
-            url: "",		//获取点赞数前6的路径
+            url: "/homepage/loadWheelPhoto",		//获取点赞数前6的路径
             async: true,
             success: function (data) {
                 console.log(data);
@@ -512,8 +527,9 @@
                         span = document.createElement("span");
                     a.className = "type-div";
                     a.href = "";
-                    img.src = data[i].category_essay_picture;
-                    span.innerHTML = data[i].category_essay_describe;
+                    a.target = "_blank";
+                    img.src = data[i].essay_subject_picture;
+                    span.innerHTML = data[i].essay_subject_type;
                     a.appendChild(img);
                     a.appendChild(span);
                     div.appendChild(a);
@@ -544,17 +560,36 @@
         });
     }
 
+    //换一换
+    function tradeEvent() {
+        var n = 1;
+        document.getElementsByClassName("trade")[0].onclick = function () {
+            getAuthor(n);
+            n++;
+        }
+    }
+
+    var maxPage = 1;
+
     //推荐作者
-    function getAuthor() {
+    function getAuthor(n) {
+
+        if (n > maxPage) {
+            n = 1;
+        }
+
         $.ajax({
             type: "get",
-            url: "/homepage/loadAuthor?currentPage=1",		//推荐作者路径
+            url: "/homepage/loadAuthor?currentPage=" + n,		//推荐作者路径
             async: true,
             success: function (data) {
+                var list = data.authors;
+                maxPage = data.pageCounts;
                 console.log(data);
-                if (data) {
+                if (list) {
                     var ul = document.getElementsByClassName("author-list")[0];
-                    for (var i = 0; i < data.length; i++) {
+                    ul.innerHTML = "";
+                    for (var i = 0; i < list.length; i++) {
                         var li = document.createElement("li"),
                             div1 = document.createElement("div"),
                             a1 = document.createElement("a"),
@@ -566,25 +601,25 @@
                             p = document.createElement("p");
                         div1.className = "author-div";
                         a1.href = "";
-                        if (data[i].user_head_icon_path) {
+                        if (list[i].user_head_icon_path) {
                             console.log("xx");
-                            img.src = data[i].user_head_icon_path;
+                            img.src = list[i].user_head_icon_path;
                         } else {
                             img.src = "/static/img/user.png";
                         }
                         a1.appendChild(img);
                         div1.appendChild(a1);
-                        a2.innerHTML = data[i].user_name;
+                        a2.innerHTML = list[i].user_name;
                         a2.href = "";
                         div2.appendChild(a2);
                         a3.href = "";
                         var user_id = document.getElementById("user_id");
-                        if (data[i].user_name != "${user.user_name}") {
+                        if (list[i].user_name != "${user.user_name}") {
                             span.innerHTML = "＋关注";
                         }
                         a3.appendChild(span);
                         div2.appendChild(a3);
-                        p.innerHTML = "获得" + data[i].user_essay_thumb + "个赞,发表了" + data[i].user_essay_number + "篇文章";
+                        p.innerHTML = "获得" + list[i].user_essay_thumb + "个赞,发表了" + list[i].user_essay_number + "篇文章";
                         div2.appendChild(p);
                         div1.appendChild(div2);
                         li.appendChild(div1);

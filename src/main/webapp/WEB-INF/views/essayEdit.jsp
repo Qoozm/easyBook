@@ -1,4 +1,3 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   Created by IntelliJ IDEA.
   User: colin
@@ -6,7 +5,8 @@
   Time: 14:47
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page contentType="text/html;charset=UTF-8" isELIgnored="false" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" isELIgnored="false" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -43,6 +43,34 @@
             height: 100%;
             width: 18%;
             background-color: #3F3F3F;
+        }
+
+        .x{
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            background-color: rgba(0,0,0,0.3);
+            display: none;
+        }
+        .x>.window{
+            position: absolute;
+            width: 220px;
+            height: 40px;
+            top: 50%;
+            left: 50%;
+            margin-left: -150px;
+            margin-top: -20px;
+            text-align: center;
+        }
+        .window>.text{
+            margin-top: 7px;
+            width: 200px;
+        }
+        .window>.buttonX{
+            margin:0px 20px;
+            width: 60px;
+            height: 30px;
+            outline: none;
         }
 
         #container > .left > a {
@@ -151,6 +179,7 @@
             font-size: 20px;
             line-height: 40px;
             font-weight: 500;
+            position: relative;
         }
 
         #container > .center > .essay-item > .active {
@@ -167,9 +196,10 @@
             background-color: initial;
             border: 0px;
             outline: none;
-            margin-bottom: 5px;
-            margin-left: 40%;
             display: none;
+            position: absolute;
+            margin-top: 7px;
+            right: 10px;
         }
 
         #container > .center > .essay-item > li > button > img {
@@ -269,15 +299,22 @@
 </head>
 <body>
 
+<div class="x">
+    <form class="window" action="/editEssay/newAnthology" method="post" onsubmit="return checkX()">
+        <input style="display: none;" name="user_id" value="${user.user_id}" />
+        <input class="text" name="anthology_name" placeholder="请输入文集名称" />
+        <input class="buttonX" type="submit" value="确定" />
+        <input class="buttonX" type="reset" value="取消" />
+    </form>
+</div>
+
 <div id="container">
     <div class="left">
-        <a href="<c:url value="/" />">返回首页</a>
-        <button id="add-anthology">+新建专题</button>
+        <a href="<c:url value="/"/>">返回首页</a>
+        <button id="add-anthology">+新建文集</button>
         <ul class="anthology-ul">
             <!--获取当前用户自己创建的专题-->
-            <li>日记本</li>
-            <li>日记本</li>
-            <li>日记本</li>
+            <!--<li>日记本</li>-->
         </ul>
         <button id="trash"><img src="../../static/img/icon/trash.png"/>回收站</button>
     </div>
@@ -285,22 +322,12 @@
         <button id="newEssay">+新建文章</button>
         <ul class="essay-item">
             <!--获取当前专题中的文章-->
+            <!--
             <li>
                 <span>无标题文章</span>
                 <button><img src="../../static/img/icon/trash.png"/></button>
             </li>
-            <li>
-                <span>无标题文章</span>
-                <button><img src="../../static/img/icon/trash.png"/></button>
-            </li>
-            <li>
-                <span>无标题文章</span>
-                <button><img src="../../static/img/icon/trash.png"/></button>
-            </li>
-            <li>
-                <span>无标题文章</span>
-                <button><img src="../../static/img/icon/trash.png"/></button>
-            </li>
+            -->
         </ul>
     </div>
     <div class="right">
@@ -386,8 +413,9 @@
     function init() {
         setHeight();	//设置高度
         getAnthology();	//获取专题
-
         creatEssayEvent();      //创建文章
+        release();		//发布文章
+        createA();      //新建文集
     }
 
     //设置高度
@@ -395,6 +423,36 @@
         var h = window.innerHeight;
         console.log(h);
         document.body.style.height = h + "px";
+    }
+
+    //新建文集
+    function createA(){
+        var h = window.innerHeight,
+            w = window.innerWidth,
+            x = document.getElementsByClassName("x")[0];
+        x.style.height = h + "px";
+        x.style.width = w + "px";
+        document.getElementById("add-anthology").onclick = showX;
+        document.getElementsByClassName("buttonX")[1].onclick = hiddenX;
+    }
+    //显示
+    function showX(){
+        var x = document.getElementsByClassName("x")[0];
+        x.style.display = "block";
+    }
+    //隐藏
+    function hiddenX(){
+        var x = document.getElementsByClassName("x")[0];
+        x.style.display = "none";
+    }
+    //验证输入是否为空
+    function checkX(){
+        var text = document.getElementsByClassName("text")[0].value;
+        if(text != "" && text != null){
+            return true;
+        }
+        alert("请输入文集名称！");
+        return false;
     }
 
     //获取文集
@@ -412,8 +470,12 @@
                         li.index = data[i].anthology_id;	//获取专题的id
                         li.innerHTML = data[i].anthology_name;	//获取到专题的名字
                         ul.appendChild(li);
+                        if (i == 0) {
+                            li.className = "active";
+                            getEssay(li.index);
+                        }
                     }
-                    anthologyEvent(ul);	//点击专题事件
+                    anthologyEvent();	//点击专题事件
                 }
             },
             error: function (err) {
@@ -430,24 +492,25 @@
             async: true,
             success: function (data) {
                 console.log(data);
-                /*
-                if(data){
-                    var hero_unit = document.getElementsByClassName("hero-unit")[0];
-                    hero_unit.style.visibility = "hidden";
+                if (data) {
                     var ul = document.getElementsByClassName("essay-item")[0];
-
-                    for(var i=0; i<data.length; i++){
+                    ul.innerHTML = "";
+                    for (var i = 0; i < data.length; i++) {
                         var li = document.createElement("li");
                         var span = document.createElement("span");
-                        span.innerHTML = date[i];	//标题
+                        li.index = data[i].essay_id;    //文章id
+                        span.innerHTML = data[i].essay_title;	//标题
+                        var button = document.createElement("button");
                         var img = document.createElement("img");
+                        img.src = "../../static/img/icon/trash.png";
+                        button.appendChild(img);
                         li.appendChild(span);
-                        li.appendChild(img);
+                        li.appendChild(button);
                         ul.appendChild(li);
                     }
-                    essayEvent(ul);	//点击文章事件
+                    essayEvent();	//点击文章事件
+                    deleteEssay();  //删除文章
                 }
-                */
             },
             error: function (err) {
                 console.log("err:" + err.message);
@@ -456,22 +519,19 @@
     }
 
     //获取文章内容
-    function showEditor(essay_id) {
+    function getEditor(essay_id) {
         $.ajax({
             type: "get",
             url: "/editEssay/acquireEssayContent?essay_id=" + essay_id,
             async: true,
             success: function (data) {
                 console.log(data);
-                /*
                 if (data) {
-                    var hero_unit = document.getElementsByClassName("hero-unit")[0];
-                    hero_unit.style.visibility = "visible";
-					var editor = hero_unit.getElementById("editor");
-					editor.innerHTML = data;
-                    console.log(data);
+                    var editor = document.getElementById("editor");
+                    editor.innerHTML = data.essay_content;
+                    var essay_title = document.getElementsByClassName("h")[0];
+                    essay_title.value = data.essay_title;
                 }
-                */
             },
             error: function (err) {
                 console.log("err:" + err.message);
@@ -480,20 +540,18 @@
     }
 
     //发布文章
-    function release(category_essay_id) {
+    function release() {
         var btn = document.getElementsByClassName("send-btn")[0];
         btn.onclick = function () {
-            var ant_ul = document.getElementsByClassName("anthology-ul")[0];
-            var category_essay_id = ant_ul.getElementsByClassName("active")[0].index;
-
             var editor = document.getElementById("editor");
-            var essay_title = document.getElementsByClassName("h")[0];
-            var essay_user_id = "${user.user_id}";
-            var essay_photo = editor.getElementsByTagName("img")[0];
-            var essay_content = editor.innerHTML;
-            var time = new Date();
-            var essay_pubDate = time;
-            var essay_category_id = document.getElementsByClassName("active")[0].index;
+            var ant_ul = document.getElementsByClassName("anthology-ul")[0];
+            var essay_title = document.getElementsByClassName("h")[0].value;    //标题
+            var essay_user_id = ${user.user_id};        //作者ID
+            var essay_content = editor.innerHTML;       //文章内容
+            var essay_pubDate = new Date();     //时间
+            var essay_anthology_id = ant_ul.getElementsByClassName("active")[0].index;       //文集ID
+            var img = editor.getElementsByTagName("img")[0];
+
             $.ajax({
                 type: "post",
                 url: "/editEssay/publishEssay",
@@ -502,7 +560,7 @@
                 contentType: 'application/json',
                 data: JSON.stringify({
                     essay_title: essay_title, essay_user_id: essay_user_id, essay_content: essay_content,
-                    essay_pubDate: essay_pubDate, essay_category_id: essay_category_id
+                    essay_pubDate: essay_pubDate, essay_anthology_id: essay_anthology_id
                 }),
                 success: function (data) {
                     console.log(data);
@@ -515,16 +573,16 @@
     }
 
     //专题点击事件
-    function anthologyEvent(ul) {
+    function anthologyEvent() {
+        var ul = document.getElementsByClassName("anthology-ul")[0];
         var li = ul.getElementsByTagName("li");
         for (var i = 0; i < li.length; i++) {
             (function (n) {
                 li[n].onclick = function () {
                     //显示专题中的文章
                     console.log(li[n].index);
-                    getEssay(li[n].index);
-                    creatEssayEvent();
-                    release();		//发布
+                    getEssay(li[n].index);  //显示所有的文章
+                    hiddenEdit();   //隐藏编辑框
                     //实现点击样式变化
                     var li_off = ul.getElementsByClassName("active")[0];	//原active
                     if (li_off) {
@@ -537,16 +595,18 @@
     }
 
     //点击文章事件
-    function essayEvent(ul) {
+    function essayEvent() {
+        var ul = document.getElementsByClassName("essay-item")[0];
         var li = ul.getElementsByTagName("li");
         for (var i = 0; i < li.length; i++) {
             (function (n) {
                 li[n].onclick = function () {
-                    var essay_id = li[n].getElementsByTagName("span")[0].index;
-                    var ant_ul = document.getElementsByClassName("anthology-ul")[0];
-                    var category_essay_id = ant_ul.getElementsByClassName("active")[0].index;
-                    showEditor(essay_id);
-
+                    clearEdit();
+                    var essay_id = li[n].index;
+                    if (essay_id) {
+                        getEditor(essay_id);
+                    }
+                    showEdit();
                     //实现点击样式变化
                     var li_off = ul.getElementsByClassName("active")[0];	//原active
                     if (li_off) {
@@ -570,9 +630,90 @@
     function creatEssayEvent() {
         var btn = document.getElementById("newEssay");
         btn.onclick = function () {
-            var hero_unit = document.getElementsByClassName("hero-unit")[0];
-            hero_unit.style.visibility = "visible";
+            var ul = document.getElementsByClassName("essay-item")[0];
+            var li = document.createElement("li");
+            var span = document.createElement("span");
+            li.index = "";    //文章id
+            span.innerHTML = "未命名文章";	//标题
+            var button = document.createElement("button");
+            var img = document.createElement("img");
+            img.src = "../../static/img/icon/trash.png";
+            button.appendChild(img);
+            li.appendChild(span);
+            li.appendChild(button);
+            ul.insertBefore(li, ul.firstElementChild);
+
+            //实现点击样式变化
+            var li_off = ul.getElementsByClassName("active")[0];	//原active
+            if (li_off) {
+                var trash_off = li_off.getElementsByTagName("button")[0];
+                trash_off.style.display = "none";
+                li_off.classList.remove("active");
+            }
+            li.className = "active";
+            var trash = li.getElementsByTagName("button")[0];
+            trash.style.display = "inline-block";
+
+            essayEvent();
+            clearEdit();
+            showEdit();
         }
+    }
+
+    //删除文章
+    function deleteEssay(){
+        var ul = document.getElementsByClassName("essay-item")[0];
+        var btn = ul.getElementsByTagName("button"),
+            li = ul.getElementsByTagName("li");
+        for(var i=0; i<btn.length; i++){
+            (function(n){
+                btn[n].onclick = function(){
+                    event.stopPropagation();
+                    var title = li[n].getElementsByTagName("span")[0].innerHTML;
+                    var con = confirm("是否删除文章"+title+"?");
+                    if(con){
+                        var essay_id = li[n].index;
+                        li[n].style.display = "none";
+                        $.ajax({
+                            type:"post",
+                            url:"/editEssay/deleteEssay",
+                            async:true,
+                            dataType: 'json',
+                            contentType: 'application/json',
+                            data: JSON.stringify({essay_id:essay_id}),
+                            success: function(data){
+                                var anthology_ul = document.getElementsByClassName("anthology-ul")[0];
+                                var anthology_li = anthology_ul.getElementsByTagName("li");
+                                getEssay(anthology_li.index);
+                            },
+                            error: function(err){
+                                console.log("删除文章error:"+err.message);
+                            }
+                        });
+                    }
+                }
+            })(i);
+        }
+    }
+
+    //清空编辑框内容
+    function clearEdit() {
+        var editor = document.getElementById("editor");
+        editor.innerHTML = "";
+        var essay_title = document.getElementsByClassName("h")[0];
+        essay_title.value = "";
+    }
+
+    //显示编辑框
+    function showEdit() {
+        var hero_unit = document.getElementsByClassName("hero-unit")[0];
+        hero_unit.style.visibility = "visible";
+    }
+
+    //隐藏编辑框
+    function hiddenEdit() {
+        var hero_unit = document.getElementsByClassName("hero-unit")[0];
+        hero_unit.style.visibility = "hidden";
     }
 
     init();

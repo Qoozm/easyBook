@@ -30,7 +30,7 @@ public interface IEssayDao {
 
     public Essay findEssayByEssayId(Integer essay_id);
 
-    public List<Essay> findEssayByEssayCategory(Integer essayCategory);
+    public List<Essay> findEssayByEssaySubject(Integer essayCategory);
 
     public List<Essay> findHotEssayWeek();
 
@@ -41,6 +41,8 @@ public interface IEssayDao {
     public List<Essay> findEssayHomePage();
 
     public List<Essay> findUserAnthologyEssayInfo(Integer essay_anthology_id);
+
+    public List<Essay> findWheelPhoto();
 
     public List<Essay> findAll();
 }

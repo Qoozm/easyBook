@@ -1,17 +1,22 @@
 package com.xupt.service;
 
 import com.xupt.bean.Essay;
-import com.xupt.bean.EssayCategory;
 
 import java.util.List;
 
 public interface IEssayService {
 
-    public List<EssayCategory> loadHotSubject();
+    public void newEssay(Essay essay);
 
-    public List<Essay> loadHotEssay();
+    public List<Essay> searchHotEssay();
 
-    public List<Essay> loadAnthologyEssayInfo(Integer essay_anthology_id);
+    public List<Essay> searchWheelPhoto();
 
-    public Essay loadEssayContent(Integer essay_id);
+    public List<Essay> searchAnthologyEssayInfoByAnthologyId(Integer essay_anthology_id);
+
+    public Essay searchEssayById(Integer essay_id);
+
+    public List<Essay> searchEssayByUserId(Integer essay_user_id);
+
+    public void deleteEssayById(Integer essay_id);
 }

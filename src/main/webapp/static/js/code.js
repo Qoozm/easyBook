@@ -6,7 +6,7 @@ var Code = {
         var codeInput = document.getElementsByClassName("code-input")[0];
         var checkCode = document.getElementsByClassName("code")[0];
         checkCode.onclick = this.createCode;
-        codeInput.onblur = this.validate;
+        codeInput.onkeyup = this.validate;
     },
     createCode: function () {
         code = "";
@@ -28,12 +28,10 @@ var Code = {
         var spanTrue = document.getElementsByClassName("true")[0];
         var spanFalse = document.getElementsByClassName("false")[0];
         var inputCodeText = inputCode.value.toUpperCase();
-        if (inputCodeText.length <= 0) {
+        if (inputCodeText.length < 4) {
             inputCode.placeholder = "请输入验证码";
             spanTrue.style.display = "none";
             spanFalse.style.display = "inline-block";
-            Code.createCode();
-            Code.flag = false;
         } else if (inputCodeText != code) {
             inputCode.placeholder = "验证码错误";
             inputCode.value = "";

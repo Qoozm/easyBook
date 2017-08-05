@@ -12,15 +12,33 @@ public class Essay implements Serializable {
     private Integer essay_id;
     private String essay_title;
     private Integer essay_user_id;
-    private byte[] essay_content;
+    private String essay_content_path;
     private Date essay_pubDate;
     private Integer essay_visits;
     private Integer essay_thumb;
     private Integer essay_category_id;
     private Integer essay_anthology_id;
+    private String essay_photo_path;
+    private String essay_content;
 
     public Essay() {
 
+    }
+
+    public String getEssay_content() {
+        return essay_content;
+    }
+
+    public void setEssay_content(String essay_content) {
+        this.essay_content = essay_content;
+    }
+
+    public String getEssay_photo_path() {
+        return essay_photo_path;
+    }
+
+    public void setEssay_photo_path(String essay_photo_path) {
+        this.essay_photo_path = essay_photo_path;
     }
 
     public Integer getEssay_anthology_id() {
@@ -63,12 +81,12 @@ public class Essay implements Serializable {
         this.essay_user_id = essay_user_id;
     }
 
-    public byte[] getEssay_content() {
-        return essay_content;
+    public String getEssay_content_path() {
+        return essay_content_path;
     }
 
-    public void setEssay_content(byte[] essay_content) {
-        this.essay_content = essay_content;
+    public void setEssay_content_path(String essay_content_path) {
+        this.essay_content_path = essay_content_path;
     }
 
     public Date getEssay_pubDate() {
@@ -101,12 +119,13 @@ public class Essay implements Serializable {
                 "essay_id=" + essay_id +
                 ", essay_title='" + essay_title + '\'' +
                 ", essay_user_id=" + essay_user_id +
-                ", essay_content=" + Arrays.toString(essay_content) +
+                ", essay_content_path='" + essay_content_path + '\'' +
                 ", essay_pubDate=" + essay_pubDate +
                 ", essay_visits=" + essay_visits +
                 ", essay_thumb=" + essay_thumb +
                 ", essay_category_id=" + essay_category_id +
                 ", essay_anthology_id=" + essay_anthology_id +
+                ", essay_photo_path='" + essay_photo_path + '\'' +
                 '}';
     }
 }

@@ -63,27 +63,22 @@ public class UserServiceImpl implements IUserService {
     }
 
     public User registerCheckPhone(String phone) {
-        User user;
-        user = userDao.findUserByPhone(phone);
-        return user;
+        return userDao.findUserByPhone(phone);
     }
 
     public User registerCheckName(String name) {
-        User user;
-        user = userDao.findUserByName(name);
-        return user;
+        return userDao.findUserByName(name);
     }
 
     public User registerCheckEmail(String email) {
-        User user;
-        user = userDao.findUserByEmail(email);
-        return user;
+        return userDao.findUserByEmail(email);
     }
 
     public List<User> loadHotAuthor() {
+        return userDao.findHotUser();
+    }
 
-        List<User> users = userDao.findHotUser();
-
-        return users;
+    public User searchUserById(Integer user_id) {
+        return userDao.findUserById(user_id);
     }
 }

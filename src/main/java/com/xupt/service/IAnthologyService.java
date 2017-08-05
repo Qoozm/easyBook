@@ -10,5 +10,5 @@ public interface IAnthologyService {
 
     public void newAnthology(Integer anthology_user_id, String anthology_name);
 
-    public List<Anthology> loadAnthology(Integer anthology_user_id);
+    public List<Anthology> searchAnthologyByUserId(Integer anthology_user_id);
 }
