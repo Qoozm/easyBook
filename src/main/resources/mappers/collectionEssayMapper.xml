@@ -5,7 +5,7 @@
 <mapper namespace="com.xupt.dao.ICollectionEssayDao">
 
     <insert id="saveCollectionEssay">
-        INNER INTO ${collectionEssayTableName} VALUES (NULL, #{user_id}, #{essay_id})
+        INNER INTO ${collectionEssayTableName} VALUES (NULL, #{user_id}, #{essay_id}, NOW())
     </insert>
 
     <delete id="deleteCollectionEssay">

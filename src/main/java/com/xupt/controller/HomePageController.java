@@ -4,11 +4,13 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.xupt.bean.Essay;
 import com.xupt.bean.EssaySubject;
+import com.xupt.bean.HomePageEssay;
 import com.xupt.bean.User;
 import com.xupt.service.IEssaySubjectService;
 import com.xupt.service.IEssayService;
 import com.xupt.service.IUserService;
 
+import com.xupt.utils.GetEssayContent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -64,8 +66,12 @@ public class HomePageController {
 
     @RequestMapping(value = "/homepage/loadEssay", method = RequestMethod.GET)
     @ResponseBody
-    public List<Essay> loadEssay() {
-        return essayService.searchHotEssay();
+    public List<HomePageEssay> loadEssay() {
+        List<HomePageEssay> homePageEssayList = essayService.searchHotEssay();
+        for (HomePageEssay homePageEssay : homePageEssayList) {
+            homePageEssay.setEssay_content(GetEssayContent.getEssayContent(homePageEssay.getEssay_content_path()));
+        }
+        return homePageEssayList;
     }
 
     @RequestMapping(value = "/homepage/loadAuthor", method = RequestMethod.GET)
@@ -90,6 +96,10 @@ public class HomePageController {
     @RequestMapping(value = "/homepage/loadWheelPhoto", method = RequestMethod.GET)
     @ResponseBody
     public List<Essay> loadWheelPhoto() {
-        return essayService.searchWheelPhoto();
+        List<Essay> essayList = essayService.searchWheelPhoto();
+        for (Essay essay : essayList) {
+            essay.setEssay_content(GetEssayContent.getEssayContent(essay.getEssay_content_path()));
+        }
+        return essayList;
     }
 }

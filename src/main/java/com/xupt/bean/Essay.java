@@ -1,8 +1,8 @@
 package com.xupt.bean;
 
 import java.io.Serializable;
-import java.util.Arrays;
 import java.util.Date;
+
 
 /**
  * Created by colin on 2017/7/13.
@@ -16,45 +16,30 @@ public class Essay implements Serializable {
     private Date essay_pubDate;
     private Integer essay_visits;
     private Integer essay_thumb;
-    private Integer essay_category_id;
+    private Integer essay_subject_id;
     private Integer essay_anthology_id;
-    private String essay_photo_path;
+    private Integer essay_comment_number;
     private String essay_content;
+    private Integer essay_photo;
 
     public Essay() {
 
     }
 
-    public String getEssay_content() {
-        return essay_content;
+    public Integer getEssay_comment_number() {
+        return essay_comment_number;
     }
 
-    public void setEssay_content(String essay_content) {
-        this.essay_content = essay_content;
+    public void setEssay_comment_number(Integer essay_comment_number) {
+        this.essay_comment_number = essay_comment_number;
     }
 
-    public String getEssay_photo_path() {
-        return essay_photo_path;
+    public Integer getEssay_photo() {
+        return essay_photo;
     }
 
-    public void setEssay_photo_path(String essay_photo_path) {
-        this.essay_photo_path = essay_photo_path;
-    }
-
-    public Integer getEssay_anthology_id() {
-        return essay_anthology_id;
-    }
-
-    public void setEssay_anthology_id(Integer essay_anthology_id) {
-        this.essay_anthology_id = essay_anthology_id;
-    }
-
-    public Integer getEssay_category_id() {
-        return essay_category_id;
-    }
-
-    public void setEssay_category_id(Integer essay_category_id) {
-        this.essay_category_id = essay_category_id;
+    public void setEssay_photo(Integer essay_photo) {
+        this.essay_photo = essay_photo;
     }
 
     public Integer getEssay_id() {
@@ -113,6 +98,30 @@ public class Essay implements Serializable {
         this.essay_thumb = essay_thumb;
     }
 
+    public Integer getEssay_subject_id() {
+        return essay_subject_id;
+    }
+
+    public void setEssay_subject_id(Integer essay_subject_id) {
+        this.essay_subject_id = essay_subject_id;
+    }
+
+    public Integer getEssay_anthology_id() {
+        return essay_anthology_id;
+    }
+
+    public void setEssay_anthology_id(Integer essay_anthology_id) {
+        this.essay_anthology_id = essay_anthology_id;
+    }
+
+    public String getEssay_content() {
+        return essay_content;
+    }
+
+    public void setEssay_content(String essay_content) {
+        this.essay_content = essay_content;
+    }
+
     @Override
     public String toString() {
         return "Essay{" +
@@ -123,9 +132,10 @@ public class Essay implements Serializable {
                 ", essay_pubDate=" + essay_pubDate +
                 ", essay_visits=" + essay_visits +
                 ", essay_thumb=" + essay_thumb +
-                ", essay_category_id=" + essay_category_id +
+                ", essay_subject_id=" + essay_subject_id +
                 ", essay_anthology_id=" + essay_anthology_id +
-                ", essay_photo_path='" + essay_photo_path + '\'' +
+                ", essay_comment_number=" + essay_comment_number +
+                ", essay_photo=" + essay_photo +
                 '}';
     }
 }

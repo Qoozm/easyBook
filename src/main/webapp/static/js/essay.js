@@ -17,5 +17,5 @@ var Essay = {
         var arr = str.split(".");
         str = arr[arr.length - 1].toLocaleUpperCase();
         return str;
-    },
-}
+    }
+};

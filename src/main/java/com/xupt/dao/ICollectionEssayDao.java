@@ -2,6 +2,8 @@ package com.xupt.dao;
 
 import org.apache.ibatis.annotations.Param;
 
+import java.util.Date;
+
 public interface ICollectionEssayDao {
 
     public void saveCollectionEssay(@Param("collectionEssayTableName") String collectionEssayTableName,

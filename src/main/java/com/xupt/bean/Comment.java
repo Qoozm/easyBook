@@ -1,7 +1,6 @@
 package com.xupt.bean;
 
 import java.io.Serializable;
-import java.util.Arrays;
 import java.util.Date;
 
 /**
@@ -9,7 +8,7 @@ import java.util.Date;
  */
 public class Comment implements Serializable {
 
-    private byte[] comment_content;
+    private String comment_content;
     private Integer comment_id;
     private Integer to_comment_id;
     private Integer comment_from_user_id;
@@ -20,6 +19,7 @@ public class Comment implements Serializable {
     private Date comment_date;
 
     public Comment() {
+
     }
 
     public Integer getTo_comment_id() {
@@ -38,11 +38,11 @@ public class Comment implements Serializable {
         this.comment_id = comment_id;
     }
 
-    public byte[] getComment_content() {
+    public String getComment_content() {
         return comment_content;
     }
 
-    public void setComment_content(byte[] comment_content) {
+    public void setComment_content(String comment_content) {
         this.comment_content = comment_content;
     }
 
@@ -97,7 +97,7 @@ public class Comment implements Serializable {
     @Override
     public String toString() {
         return "Comment{" +
-                "comment_content=" + Arrays.toString(comment_content) +
+                "comment_content=" + comment_content +
                 ", comment_id=" + comment_id +
                 ", to_comment_id=" + to_comment_id +
                 ", comment_from_user_id=" + comment_from_user_id +

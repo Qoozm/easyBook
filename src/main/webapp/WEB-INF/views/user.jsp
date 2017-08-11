@@ -1,5 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" isELIgnored="false" %>
+<%@ page contentType="text/html;charset=UTF-8" isELIgnored="false" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -156,7 +156,7 @@
 <nav id="onUser">
     <!--左侧LOGO-->
     <div class="left">
-        <a href="<c:url value="/" />">
+        <a href="<c:url value="/"/>">
             <img src="../../static/img/logo.png"/>
         </a>
     </div>
@@ -178,7 +178,7 @@
             </li>
             <li>
                 <div class="find">
-                    <input type="text"/>
+                    <input/>
                     <a href=""><img src="../../static/img/find.png"/></a>
                 </div>
             </li>
@@ -188,21 +188,21 @@
     <div class="right">
         <ul>
             <li>
-                <a id="userName" class="user-icon a-font" href="">
-                    <span id="user_name" style="display: none;">xxx</span>
-                    <img src="../../static/img/user.jpg"/>
+                <a id="userName" class="user-icon a-font" href="<c:url value="/"/>">
+                    <span id="user_id" style="display: none;">${user.user_id}</span>
+                    <img src="../../static/img/user.png"/>
                 </a>
                 <ul id="userInfo">
-                    <li><a class="a-font" href="">我的主页</a></li>
+                    <li><a class="a-font" href="<c:url value="/userHomePage"/>">我的主页</a></li>
                     <li><a class="a-font" href="">收藏的文章</a></li>
                     <li><a class="a-font" href="">喜欢的文章</a></li>
                     <li><a class="a-font" href="">设置</a></li>
                     <li><a class="a-font" href="">反馈</a></li>
-                    <li><a class="a-font" href="">退出</a></li>
+                    <li><a class="a-font" href="<c:url value="/loginOut"/>">退出</a></li>
                 </ul>
             </li>
             <li>
-                <a class="write" href="">写文章</a>
+                <a class="write" href="<c:url value="/writeEssay"/>" target="_blank">写文章</a>
             </li>
         </ul>
     </div>
@@ -669,6 +669,8 @@
 <script type="text/javascript" src="/static/js/fans.js"></script>
 <script type="text/javascript" src="/static/js/user_subject.js"></script>
 <script type="text/javascript" src="/static/js/jquery-3.1.0.min.js"></script>
+<script type="text/javascript" src="/static/ajax/ajax.js"></script>
+<script type="text/javascript" src="/static/object/EssayObj.js"></script>
 <script>
     function init() {
         nav.changeNav();//导航栏
@@ -679,7 +681,11 @@
         eventFun_user();
         eventNav_2();
         eventUl_3();
+        showUserInfo(); //显示用户信息
     }
+
+    //函数数组
+    var fnArray = [getAttention, getFans, getAttentionSubjuct, getLikeEssay, getCollectEssay, getUserEssay, getDynamic, getComment, getHotInfo];
 
     //用户名字下面的事件
     function eventFun_user() {
@@ -693,10 +699,12 @@
                     }
                     if (i == 2) {
                         ul[i].style.display = "block";
+                        fnArray[5]();
                         changeNavFun(5);
                         changeContainFun(5);
                     } else {
                         ul[0].style.display = "block";
+                        fnArray[i]();
                         changeNavFun(i);
                         changeContainFun(i);
                     }
@@ -712,6 +720,7 @@
         for (var i = 0; i < liList.length; i++) {
             (function (n) {
                 liList[n].onclick = function () {
+                    fnArray[n]();   //显示对于的信息
                     changeContainFun(n);
                     changeNavFun(n);
                 }
@@ -731,6 +740,7 @@
                         ul[j].style.display = "none";
                     }
                     ul[1].style.display = "block";
+                    fnArray[n + 2]();     //显示对象信息;
                     changeContainFun(n + 2);
                     changeNavFun(n + 2);
                 }
@@ -756,6 +766,213 @@
         var ul = document.getElementsByClassName("ul-2 off")[n];
         ul.classList.remove("off");
         ul.classList.add("on");
+    }
+
+
+    //显示用户信息
+    function showUserInfo(data) {
+        console.log(data);
+    }
+
+    function getUserInfo() {
+        var type, url;
+        type = "GET";
+        url = "";
+        var ajax = new L_Ajax(type, url);
+//        ajax.ajax_get(showUserInfo);
+    }
+
+    //显示关注用户
+    function showAttention(data) {
+        console.log(data);
+    }
+
+    function getAttention() {
+        var type, url;
+        type = "GET";
+        url = "";
+        var ajax = new L_Ajax(type, url);
+//        ajax.ajax_get(showAttention);
+    }
+
+    //显示粉丝
+    function showFans(data) {
+        console.log(data);
+    }
+
+    function getFans() {
+        var type, url;
+        type = "GET";
+        url = "";
+        var ajax = new L_Ajax(type, url);
+//        ajax.ajax_get(showFans);
+    }
+
+    //显示关注的专题
+    function showAttentionSubjuct(data) {
+        console.log(data);
+    }
+
+    function getAttentionSubjuct() {
+        var type, url;
+        type = "GET";
+        url = "";
+        var ajax = new L_Ajax(type, url);
+//        ajax.ajax_get(showAttentionSubjuct);
+    }
+
+    //显示喜欢的文章
+    function showLikeEssay(data) {
+        var ul_essay = document.getElementsByClassName("ul-like-essay")[0];
+        var ul = ul_essay.getElementsByClassName("essay-list")[0];
+        ul.innerHTML = "";
+        for (var i = 0; i < data.length; i++) {
+            console.log(data[i]);
+            //时间
+            var s = data[i].essay_pubDate;
+            var date = new Date(s);
+
+            var essayContent = data[i].essay_content;
+            var div = document.createElement("div");
+            div.innerHTML = essayContent;
+
+            var userPhoto = data[i].user_head_icon_path,
+                userName = data[i].user_name,
+                time = date.toLocaleString(),
+                photo = div.getElementsByTagName("img")[0],
+                title = data[i].essay_title,
+                content = div.innerText,
+                subject = data[i].essay_subject_type,
+                visitNum = data[i].essay_visits,
+                commentNum = data[i].essay_comment_number,
+                thumbNum = data[i].essay_thumb;
+            var essayObj = new EssayObj(userPhoto, userName, time, photo, title, content, subject, visitNum, commentNum, thumbNum);
+            essayObj.createDom(ul);
+        }
+    }
+
+    function getLikeEssay() {
+        var type, url;
+        type = "GET";
+        url = "";
+        var ajax = new L_Ajax(type, url);
+//        ajax.ajax_get(showLikeEssay);
+    }
+
+    //显示收藏的文章
+    function showCollectEssay(data) {
+        var ul_essay = document.getElementsByClassName("ul-collect-essay")[0];
+        var ul = ul_essay.getElementsByClassName("essay-list")[0];
+        ul.innerHTML = "";
+        for (var i = 0; i < data.length; i++) {
+            console.log(data[i]);
+            //时间
+            var s = data[i].essay_pubDate;
+            var date = new Date(s);
+
+            var essayContent = data[i].essay_content;
+            var div = document.createElement("div");
+            div.innerHTML = essayContent;
+
+            var userPhoto = data[i].user_head_icon_path,
+                userName = data[i].user_name,
+                time = date.toLocaleString(),
+                photo = div.getElementsByTagName("img")[0],
+                title = data[i].essay_title,
+                content = div.innerText,
+                subject = data[i].essay_subject_type,
+                visitNum = data[i].essay_visits,
+                commentNum = data[i].essay_comment_number,
+                thumbNum = data[i].essay_thumb;
+            var essayObj = new EssayObj(userPhoto, userName, time, photo, title, content, subject, visitNum, commentNum, thumbNum);
+            essayObj.createDom(ul);
+        }
+    }
+
+    function getCollectEssay() {
+        var type, url;
+        type = "GET";
+        url = "";
+        var ajax = new L_Ajax(type, url);
+        ajax.ajax_get(showCollectEssay);
+    }
+
+    //显示用户文章
+    function showUserEssay(data) {
+        console.log(data);
+        var ul_essay = document.getElementsByClassName("ul-essay")[0];
+        var ul = ul_essay.getElementsByClassName("essay-list")[0];
+        ul.innerHTML = "";
+        for (var i = 0; i < data.length; i++) {
+            console.log(data[i]);
+            //时间
+            var s = data[i].essay_pubDate;
+            var date = new Date(s);
+
+            var essayContent = data[i].essay_content;
+            var div = document.createElement("div");
+            div.innerHTML = essayContent;
+
+            var userPhoto = "${user.user_head_icon_path}",
+                userName = "${user.user_name}",
+                time = date.toLocaleString(),
+                photo = div.getElementsByTagName("img")[0],
+                title = data[i].essay_title,
+                content = div.innerText,
+                subject = data[i].essay_subject_type,
+                visitNum = data[i].essay_visits,
+                commentNum = data[i].essay_comment_number,
+                thumbNum = data[i].essay_thumb;
+            var essayObj = new EssayObj(userPhoto, userName, time, photo, title, content, subject, visitNum, commentNum, thumbNum);
+            essayObj.createDom(ul);
+        }
+    }
+
+    function getUserEssay() {
+        var type, url;
+        type = "GET";
+        url = "/userHomePage/loadCurrentUserEssay";
+        var ajax = new L_Ajax(type, url);
+        ajax.ajax_get(showUserEssay);
+    }
+
+    //显示动态
+    function showDynamic(data) {
+        console.log(data);
+    }
+
+    function getDynamic() {
+        var type, url;
+        type = "GET";
+        url = "/userHomePage/loadDynamic";
+        var ajax = new L_Ajax(type, url);
+//        ajax.ajax_get(showDynamic);
+    }
+
+    //显示最新评论
+    function showComment(data) {
+        console.log(data);
+    }
+
+    function getComment() {
+        var type, url;
+        type = "GET";
+        url = "";
+        var ajax = new L_Ajax(type, url);
+//        ajax.ajax_get(showComment);
+    }
+
+    //显示热门信息
+    function showHotInfo(data) {
+        console.log(data);
+    }
+
+    function getHotInfo() {
+        var type, url;
+        type = "GET";
+        url = "";
+        var ajax = new L_Ajax(type, url);
+//        ajax.ajax_get(showHotInfo);
     }
 
     init();

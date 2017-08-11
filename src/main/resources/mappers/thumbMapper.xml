@@ -4,6 +4,33 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.xupt.dao.IThumbDao">
     <insert id="saveThumb">
-        INSERT INTO ${thumbTableName} VALUES (#{thumb.thumb_user_id} #{thumb.thumb_essay_id})
+        INSERT INTO ${thumbTableName} VALUES (#{thumb.thumb_user_id} #{thumb.thumb_essay_id}, NOW())
     </insert>
+
+    <select id="selectThumbDynamic" resultMap="dynamicThumbMap">
+        SELECT
+              essay_comment_number,
+              essay_content_path,
+              essay_id,
+              essay_thumb,
+              essay_title,
+              user_name,
+              essay_visits,
+              thumb_date
+        FROM ${thumbTableName}, ebuser, ebessay
+        WHERE thumb_user_id = #{thumb_user_id}
+              AND essay_id = thumb_essay_id
+              AND user_id = thumb_user_id
+    </select>
+
+    <resultMap id="dynamicThumbMap" type="DynamicThumb">
+        <result property="essay_comment_number" column="essay_comment_number"/>
+        <result property="essay_content_path" column="essay_content_path"/>
+        <result property="essay_id" column="essay_id"/>
+        <result property="essay_thumb" column="essay_thumb"/>
+        <result property="essay_title" column="essay_title"/>
+        <result property="essay_user_name" column="user_name"/>
+        <result property="essay_visits" column="essay_visits"/>
+        <result property="thumb_date" column="thumb_date"/>
+    </resultMap>
 </mapper>

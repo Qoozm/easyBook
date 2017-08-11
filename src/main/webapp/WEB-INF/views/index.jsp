@@ -1,4 +1,3 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   Created by IntelliJ IDEA.
   User: colin
@@ -7,6 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" isELIgnored="false" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -47,18 +47,18 @@
         }
 
         .divbg > .span_left {
-            left: 0px;
+            left: 0;
             top: 45%;
         }
 
         .divbg > .span_right {
-            right: 0px;
+            right: 0;
             top: 45%;
         }
 
         .divbg > .banner {
             position: absolute;
-            bottom: 0px;
+            bottom: 0;
             left: 42%;
             margin-bottom: 10px;
             height: 20px;
@@ -78,7 +78,6 @@
             width: 100%;
             height: 100%;
             position: absolute;
-            transition: all 2s linear;
         }
 
         .container > .main {
@@ -93,7 +92,7 @@
         .main > .essayInfo > .essayType {
             width: 90%;
             height: 100px;
-            margin-left: 0%;
+            margin-left: 0;
         }
 
         .essayInfo > .essayType > .type-div {
@@ -120,7 +119,7 @@
 
         .main > .essayInfo > .essay {
             width: 90%;
-            margin-left: 0%;
+            margin-left: 0;
         }
 
         .main > .other {
@@ -209,13 +208,30 @@
             position: absolute;
             display: inline-block;
             cursor: pointer;
-            right: 0px;
+            right: 0;
             font-size: 15px;
             color: #AAAAAA;
         }
 
         .trade:hover {
             color: #CCCCCC;
+        }
+
+        .divbg > .bg > img {
+            width: 100%;
+            height: 100%;
+        }
+
+        .divbg > .bg > span {
+            position: absolute;
+            display: inline-block;
+            z-index: 10;
+            font-size: 30px;
+            padding: 10px;
+            bottom: 50px;
+            left: 50px;
+            color: #FFF;
+            text-align: center;
         }
     </style>
 
@@ -225,7 +241,7 @@
 <nav id="onUser">
     <!--左侧LOGO-->
     <div class="left">
-        <a href="/">
+        <a href="<c:url value="/"/>">
             <img src="../../static/img/logo.png"/>
         </a>
     </div>
@@ -247,7 +263,7 @@
             </li>
             <li>
                 <div class="find">
-                    <input type="text"/>
+                    <input/>
                     <a href=""><img src="../../static/img/find.png"/></a>
                 </div>
             </li>
@@ -257,7 +273,7 @@
     <div class="right">
         <ul>
             <li>
-                <a id="userName" class="user-icon a-font" href="/">
+                <a id="userName" class="user-icon a-font" href="<c:url value="/"/>">
                     <span id="user_id" style="display: none;">${user.user_id}</span>
                     <img src="../../static/img/user.png"/>
                 </a>
@@ -280,7 +296,7 @@
 <nav id="noUser" style="display: none;">
     <!--左侧LOGO-->
     <div class="left">
-        <a href="/">
+        <a href="<c:url value="/"/>">
             <img src="../../static/img/logo.png"/>
         </a>
     </div>
@@ -290,7 +306,7 @@
             <li><a class="a-font" href="#">发现</a></li>
             <li>
                 <div class="find">
-                    <input type="text"/>
+                    <input/>
                     <a href=""><img src="../../static/img/find.png"/></a>
                 </div>
             </li>
@@ -317,20 +333,41 @@
         <span class="span_list span_left"><</span>
         <span class="span_list span_right">></span>
         <div class="banner">
+            <!--
             <div class="point"></div>
             <div class="point"></div>
             <div class="point"></div>
             <div class="point"></div>
             <div class="point"></div>
             <div class="point"></div>
+            -->
         </div>
-
-        <img class="bg" src="../../static/img/lunbo/visual_slide01.jpg">
-        <img class="bg" src="../../static/img/lunbo/visual_slide02.jpg">
-        <img class="bg" src="../../static/img/lunbo/visual_slide03.jpg">
-        <img class="bg" src="../../static/img/lunbo/visual_slide04.jpg">
-        <img class="bg" src="../../static/img/lunbo/visual_slide05.jpg">
-        <img class="bg" src="../../static/img/lunbo/visual_slide06.jpg">
+        <!--
+            <div class="bg">
+                <img src="static/img/lunbo/visual_slide01.jpg">
+                <span>第一篇</span>
+            </div>
+            <div class="bg">
+                <img src="static/img/lunbo/visual_slide02.jpg">
+                <span>第二篇</span>
+            </div>
+            <div class="bg">
+                <img src="static/img/lunbo/visual_slide03.jpg">
+                <span>第三篇</span>
+            </div>
+            <div class="bg">
+                <img src="static/img/lunbo/visual_slide04.jpg">
+                <span>第四篇</span>
+            </div>
+            <div class="bg">
+                <img src="static/img/lunbo/visual_slide05.jpg">
+                <span>第五篇</span>
+            </div>
+            <div class="bg">
+                <img src="static/img/lunbo/visual_slide06.jpg">
+                <span>第六篇</span>
+            </div>
+            -->
     </div>
     <div class="main">
         <div class="essayInfo">
@@ -344,6 +381,7 @@
             </div>
             <div class="essay">
                 <ul class="essay-list">
+
                     <li class="essay-li">
                         <a href=""><img src="../../static/img/essayPhoto/essay01.png"/></a>
                         <div class="essay-div">
@@ -373,6 +411,7 @@
                             </div>
                         </div>
                     </li>
+
                 </ul>
 
             </div>
@@ -415,16 +454,19 @@
 <script type="text/javascript" src="../../static/js/jquery-3.1.0.min.js"></script>
 <script type="text/javascript" src="../../static/js/nav.js"></script>
 <script type="text/javascript" src="../../static/js/essay.js"></script>
+<script type="text/javascript" src="../../static/ajax/essayAjax.js"></script>
+<script type="text/javascript" src="../../static/object/EssayObj.js"></script>
 <script>
     window.onload = function () {
         nav.changeNav();//导航栏
-        slideShow();	//轮播图
         getEssayType();	//获取专题
         getEssayPhoto();//获取点赞数前6
         getEssay();		//获取所有文章
         getAuthor(1);    //推荐作者
         setUserPhoto();
         tradeEvent();
+
+        Essay.changeEssayDiv();
     };
 
     function setUserPhoto() {
@@ -486,7 +528,12 @@
 
         function imgturn(n) {
             num += n;
-            num = num % 6;
+            if (num == -1) {
+                num = 5;
+            } else {
+                num = num % 6;
+            }
+
             imgList[indexnum].style.zIndex = 0;
             imgList[indexnum].style.opacity = 0;
             pointMouse[indexnum].style.background = "white";
@@ -497,19 +544,77 @@
         }
     }
 
-    //获取轮播图图片
+    //显示轮播图图片
+    function showEssayPhoto(data) {
+        var divbg = document.getElementsByClassName("divbg")[0];
+        var banner = divbg.getElementsByClassName("banner")[0];
+        for (var i = 0; i < data.length; i++) {
+            var point = document.createElement("div"),
+                bg = document.createElement("div"),
+                span = document.createElement("span")
+            var essayContent = data[i].essay_content;
+            var div2 = document.createElement("div");
+            div2.innerHTML = essayContent;
+            var img = div2.getElementsByTagName("img")[0];
+            var title = data[i].essay_title;
+            span.innerHTML = title;
+            point.className = "point";
+            bg.className = "bg";
+            bg.appendChild(img);
+            bg.appendChild(span);
+
+            banner.appendChild(point);
+            divbg.appendChild(bg);
+        }
+        slideShow();	//轮播图
+    }
+
     function getEssayPhoto() {
-        $.ajax({
-            type: "get",
-            url: "/homepage/loadWheelPhoto",		//获取点赞数前6的路径
-            async: true,
-            success: function (data) {
-                console.log(data);
-            },
-            error: function (err) {
-                console.log(err.message);
-            }
-        });
+        var url, type;
+        url = "/homepage/loadWheelPhoto";
+        type = "GET";
+        var essayAjax = new EssayAjax(type, url);
+        essayAjax.getEssay(showEssayPhoto);
+
+    }
+
+    //显示文章
+    var showEssay = function (data) {
+        var ul = document.getElementsByClassName("essay-list")[0];
+
+        console.log(data);
+        for (var i = 0; i < data.length; i++) {
+            console.log(data[i]);
+            //时间
+            var s = data[i].essay_pubDate;
+            var date = new Date(s);
+
+            var essayContent = "海﻿ ——瘦桶 你的辽阔﻿ 足以吞没尘世的卑微﻿ 你对我﻿ 正如我对于你﻿ 一无所知﻿﻿ 当我满目创伤﻿ 站在你面前的时候﻿ 你不能说我一无所有﻿ 你不能说我一无所有﻿﻿海﻿ ——瘦桶 你的辽阔﻿ 足以吞没尘世的卑微﻿ 你对我﻿ 正如我对于你﻿ 一无所知﻿﻿ 当我满目创伤﻿ 站在你面前的时候﻿ 你不能说我一无所有﻿ 你不能说我一无所有﻿﻿";
+            var div = document.createElement("div");
+            div.innerHTML = essayContent;
+
+            var userPhoto = data[i].user_head_icon_path,
+                userName = data[i].user_name,
+                time = date.toLocaleString(),
+                photo = div.getElementsByTagName("img")[0],
+                title = data[i].essay_title,
+                content = div.innerText,
+                subject = data[i].essay_subject_type,
+                visitNum = data[i].essay_visits,
+                commentNum = data[i].essay_comment_number,
+                thumbNum = data[i].essay_thumb;
+            var essayObj = new EssayObj(userPhoto, userName, time, photo, title, content, subject, visitNum, commentNum, thumbNum);
+            essayObj.createDom(ul);
+        }
+    };
+
+    function getEssay() {
+        var url, type;
+        url = "/homepage/loadEssay";
+        type = "GET";
+        console.log("getEssay");
+        var essayAjax = new EssayAjax(type, url);
+        essayAjax.getEssay(showEssay);
     }
 
     //获取专题
@@ -545,21 +650,6 @@
         });
     }
 
-    //获取所有文章
-    function getEssay() {
-        $.ajax({
-            type: "get",
-            url: "/homepage/loadEssay",		//获取所有文章的路径
-            async: true,
-            success: function (data) {
-                console.log(data);
-            },
-            error: function (err) {
-                console.log(err.message);
-            }
-        });
-    }
-
     //换一换
     function tradeEvent() {
         var n = 1;
@@ -574,8 +664,9 @@
     //推荐作者
     function getAuthor(n) {
 
-        if (n > maxPage) {
-            n = 1;
+        n = n % maxPage;
+        if (n == 0) {
+            n = maxPage;
         }
 
         $.ajax({
@@ -585,7 +676,6 @@
             success: function (data) {
                 var list = data.authors;
                 maxPage = data.pageCounts;
-                console.log(data);
                 if (list) {
                     var ul = document.getElementsByClassName("author-list")[0];
                     ul.innerHTML = "";
@@ -602,7 +692,6 @@
                         div1.className = "author-div";
                         a1.href = "";
                         if (list[i].user_head_icon_path) {
-                            console.log("xx");
                             img.src = list[i].user_head_icon_path;
                         } else {
                             img.src = "/static/img/user.png";

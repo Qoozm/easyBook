@@ -25,12 +25,12 @@ public class EssayDaoTest {
         Essay essay = new Essay();
 
         essay.setEssay_content_path(new String("qwerieurwr"));
-        essay.setEssay_pubDate(new Date());
+//        essay.setEssay_pubDate(new Date());
         essay.setEssay_thumb(10000);
         essay.setEssay_title(new String("王者荣耀"));
         essay.setEssay_visits(10);
         essay.setEssay_user_id(1);
-        essay.setEssay_category_id(2);
+        essay.setEssay_subject_id(2);
 
         essayDao.save(essay);
 //        essayDao.deleteById(1);

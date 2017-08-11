@@ -1,11 +1,13 @@
 package com.xupt.bean;
 
 import java.io.Serializable;
+import java.util.Date;
 
 public class Thumb implements Serializable {
 
     private Integer thumb_user_id;
     private Integer thumb_essay_id;
+    private Date thumb_date;
 
     public Thumb() {
 
@@ -27,11 +29,20 @@ public class Thumb implements Serializable {
         this.thumb_essay_id = thumb_essay_id;
     }
 
+    public Date getThumb_date() {
+        return thumb_date;
+    }
+
+    public void setThumb_date(Date thumb_date) {
+        this.thumb_date = thumb_date;
+    }
+
     @Override
     public String toString() {
         return "Thumb{" +
                 "thumb_user_id=" + thumb_user_id +
                 ", thumb_essay_id=" + thumb_essay_id +
+                ", thumb_date=" + thumb_date +
                 '}';
     }
 }

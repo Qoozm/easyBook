@@ -5,11 +5,38 @@
 <mapper namespace="com.xupt.dao.IAttentionSubjectDao">
 
     <insert id="saveAttentionSubject">
-        INSERT INTO ${attentionSubjectTableName} VALUES (NULL, #{from_user_id}, #{to_essay_id})
+        INSERT INTO ${attentionSubjectTableName} VALUES (NULL, #{from_user_id}, #{to_essay_id}, NOW())
     </insert>
 
     <delete id="deleteAttentionSubject">
         DELETE FROM ${attentionSubjectTableName} WHERE from_user_id = #{from_user_id} AND to_essay_id = #{to_essay_id}
     </delete>
+
+    <select id="selectAttentionSubject" resultMap="dynamicAttentionSubject">
+        SELECT
+            attention_subject_date,
+            essay_subject_attention,
+            essay_subject_describe,
+            essay_subject_id,
+            essay_subject_number,
+            essay_subject_picture,
+            essay_subject_type,
+            user_name
+        FROM ${attentionSubjectTableName}, ebessay_subject, ebuser
+        WHERE from_user_id = #{from_user_id}
+              AND essay_subject_id = to_subject_id
+              AND user_id = #{from_user_id}
+    </select>
+
+    <resultMap id="dynamicAttentionSubject" type="DynamicAttentionSubject">
+        <result property="attention_subject_date" column="attention_subject_date"/>
+        <result property="essay_subject_attention" column="essay_subject_attention"/>
+        <result property="essay_subject_describe" column="essay_subject_describe"/>
+        <result property="essay_subject_id" column="essay_subject_id"/>
+        <result property="essay_subject_number" column="essay_subject_number"/>
+        <result property="essay_subject_picture" column="essay_subject_picture"/>
+        <result property="essay_subject_type" column="essay_subject_type"/>
+        <result property="essay_subject_user_name" column="user_name"/>
+    </resultMap>
 
 </mapper>

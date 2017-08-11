@@ -1,6 +1,7 @@
 package com.xupt.service.serviceImpl;
 
 import com.xupt.bean.Essay;
+import com.xupt.bean.HomePageEssay;
 import com.xupt.dao.IEssayDao;
 import com.xupt.service.IEssayService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,11 @@ public class EssayServiceImpl implements IEssayService {
         essayDao.save(essay);
     }
 
-    public List<Essay> searchHotEssay() {
+    public void amendEssay(Essay essay) {
+        essayDao.updateEssay(essay);
+    }
+
+    public List<HomePageEssay> searchHotEssay() {
         return essayDao.findEssayHomePage();
     }
 

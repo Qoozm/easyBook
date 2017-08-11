@@ -1,6 +1,7 @@
 package com.xupt.dao;
 
 import com.xupt.bean.Comment;
+import com.xupt.bean.DynamicComment;
 import com.xupt.bean.Essay;
 import org.apache.ibatis.annotations.Param;
 
@@ -28,4 +29,7 @@ public interface ICommentDao {
 
     public List<Comment> findCommentsByToCommentId(@Param("commentTableName") String commentTableName,
                                                    @Param("comment") Comment comment);
+
+    public List<DynamicComment> findDynamicComment(@Param("commentTableName") String commentTableName,
+                                                   @Param("comment_from_user_id") Integer comment_from_user_id);
 }

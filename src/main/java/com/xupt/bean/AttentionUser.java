@@ -2,6 +2,7 @@ package com.xupt.bean;
 
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * Created by 慧乔乔 on 2017/7/15.
@@ -11,8 +12,18 @@ public class AttentionUser implements Serializable {
     private Integer attention_id;
     private Integer from_user_id;
     private Integer to_user_id;
+    private Date attention_user_date;
 
     public AttentionUser() {
+
+    }
+
+    public Date getAttention_user_date() {
+        return attention_user_date;
+    }
+
+    public void setAttention_user_date(Date attention_user_date) {
+        this.attention_user_date = attention_user_date;
     }
 
     public Integer getAttention_id() {
@@ -41,10 +52,11 @@ public class AttentionUser implements Serializable {
 
     @Override
     public String toString() {
-        return "Attention{" +
+        return "AttentionUser{" +
                 "attention_id=" + attention_id +
                 ", from_user_id=" + from_user_id +
                 ", to_user_id=" + to_user_id +
+                ", attention_user_date=" + attention_user_date +
                 '}';
     }
 }

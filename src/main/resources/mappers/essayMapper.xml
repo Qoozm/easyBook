@@ -6,10 +6,9 @@
 
     <insert id="save" parameterType="com.xupt.bean.Essay" useGeneratedKeys="true" keyProperty="essay_id">
         insert into ebessay (essay_title, essay_user_id, essay_content_path, essay_pubDate,
-                            essay_category_id, essay_anthology_id, essay_photo_path)
+                            essay_subject_id, essay_anthology_id, essay_photo)
                             VALUES (#{essay_title}, #{essay_user_id}, #{essay_content_path}, #{essay_pubDate},
-                            #{essay_category_id}, #{essay_anthology_id},
-                            #{essay_photo_path})
+                            #{essay_subject_id}, #{essay_anthology_id}, #{essay_photo})
     </insert>
     
     <resultMap id="essayResultMap" type="com.xupt.bean.Essay">
@@ -20,9 +19,10 @@
         <result column="essay_pubDate" property="essay_pubDate"/>
         <result column="essay_visits" property="essay_visits"/>
         <result column="essay_thumb" property="essay_thumb"/>
-        <result property="essay_category_id" column="essay_category_id"/>
+        <result property="essay_subject_id" column="essay_subject_id"/>
         <result property="essay_anthology_id" column="essay_anthology_id"/>
-        <result property="essay_photo_path" column="essay_photo_path"/>
+        <result property="essay_comment_number" column="essay_comment_number"/>
+        <result property="essay_photo" column="essay_photo"/>
     </resultMap>
 
     <select id="findAll" resultMap="essayResultMap">
@@ -49,8 +49,45 @@
         SELECT * FROM ebessay WHERE essay_user_id = #{userId}
     </select>
 
-    <select id="findEssayHomePage" resultMap="essayResultMap">
-        SELECT * FROM ebessay WHERE essay_pubdate > DATE_SUB(CURDATE(), INTERVAL 2 DAY)
+    <resultMap id="homePageEssayMap" type="HomePageEssay">
+        <result column="user_id" property="user_id"/>
+        <result column="essay_id" property="essay_id"/>
+        <result column="essay_subject_id" property="essay_subject_id"/>
+        <result column="essay_subject_type" property="essay_subject_type"/>
+        <result column="user_name" property="user_name"/>
+        <result column="user_head_icon_path" property="user_head_icon_path"/>
+        <result column="essay_pubDate" property="essay_pubDate"/>
+        <result column="essay_title" property="essay_title"/>
+        <result column="essay_content_path" property="essay_content_path"/>
+        <result column="essay_visits" property="essay_visits"/>
+        <result column="essay_thumb" property="essay_thumb"/>
+        <result column="essay_comment_number" property="essay_comment_number"/>
+    </resultMap>
+
+    <select id="findEssayHomePage" resultMap="homePageEssayMap">
+        SELECT
+            user_id,
+            essay_id,
+            ebessay.essay_subject_id,
+            essay_subject_type,
+            user_name,
+            user_head_icon_path,
+            essay_pubDate,
+            essay_title,
+            essay_content_path,
+            essay_visits,
+            essay_thumb,
+            essay_comment_number
+        FROM
+            ebessay,
+            ebuser,
+            ebessay_subject
+        WHERE
+            essay_user_id = user_id
+        AND ebessay.essay_subject_id = ebessay_subject.essay_subject_id
+        AND essay_pubDate > DATE_SUB(CURDATE(), INTERVAL 2 DAY)
+        ORDER BY
+            essay_visits DESC
     </select>
 
     <select id="findUserAnthologyEssayInfo" resultMap="essayResultMap" parameterType="Integer">
@@ -58,7 +95,7 @@
     </select>
 
     <select id="findWheelPhoto" resultMap="essayResultMap">
-        SELECT * FROM ebessay ORDER BY essay_visits DESC LIMIT 0,6
+        SELECT essay_title, essay_content_path, essay_id FROM ebessay WHERE essay_photo = 1 ORDER BY essay_visits DESC LIMIT 0,6
     </select>
 
     <delete id="deleteEssayById" parameterType="java.lang.Integer">
@@ -72,16 +109,10 @@
                             essay_pubDate = #{essay_pubDate},
                             essay_visits = #{essay_visits},
                             essay_thumb = #{essay_thumb},
-                            essay_category_id = #{#essay_category_id}
+                            essay_subject_id = #{essay_subject_id},
+                            essay_anthology_id = #{essay_anthology_id},
+                            essay_photo = #{essay_photo}
                             where essay_id = #{essay_id}
-    </update>
-
-    <update id="updateEssayContent">
-        UPDATE ebessay SET essay_content = #{essay_content} WHERE essay_id = #{essay_id}
-    </update>
-
-    <update id="updateEssayTitle">
-        UPDATE ebessay SET essay_title = #{essay_title} WHERE essay_id = #{essay_id}
     </update>
 
     <update id="updateEssayVisits">

@@ -12,11 +12,15 @@ import java.util.List;
 @Service
 public class AnthologyServiceImpl implements IAnthologyService {
 
-    @Autowired
-    private IAnthologyDao anthologyDao;
+    private final IAnthologyDao anthologyDao;
 
     private final int ANTHOLOGY_TABLE_COUNT = 5;
     private String PRE_ANTHOLOGY_TABLE_NAME = "ebanthology_";
+
+    @Autowired
+    public AnthologyServiceImpl(IAnthologyDao anthologyDao) {
+        this.anthologyDao = anthologyDao;
+    }
 
     public void initUserAnthology(Integer anthology_user_id) {
         int tableCount = anthology_user_id % ANTHOLOGY_TABLE_COUNT;

@@ -1,6 +1,7 @@
 package com.xupt.bean;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * Created by colin on 2017/7/21.
@@ -10,9 +11,18 @@ public class CollectionEssay implements Serializable {
     private Integer collection_essay_id;
     private Integer user_id;
     private Integer essay_id;
+    private Date collection_essay_date;
 
     public CollectionEssay() {
 
+    }
+
+    public Date getCollection_essay_date() {
+        return collection_essay_date;
+    }
+
+    public void setCollection_essay_date(Date collection_essay_date) {
+        this.collection_essay_date = collection_essay_date;
     }
 
     public Integer getCollection_essay_id() {
@@ -45,6 +55,7 @@ public class CollectionEssay implements Serializable {
                 "collection_essay_id=" + collection_essay_id +
                 ", user_id=" + user_id +
                 ", essay_id=" + essay_id +
+                ", collection_essay_date=" + collection_essay_date +
                 '}';
     }
 }

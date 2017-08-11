@@ -40,4 +40,31 @@
 		<result property="comment_to_user_id" column="comment_to_user_id"></result>
 		<result property="to_comment_id" column="to_comment_id"></result>
 	</resultMap>
+
+	<select id="findDynamicComment" resultMap="dynamicCommentMap">
+		SELECT
+			  comment_content,
+			  comment_date,
+			  user_name,
+			  essay_comment_number,
+			  essay_thumb,
+			  essay_title,
+			  essay_visits,
+			  essay_content_path
+		FROM ebessay, ${commentTableName}, ebuser
+		WHERE comment_from_user_id = #{comment_from_user_id}
+				AND user_id = comment_to_user_id
+				AND comment_essay_id = essay_id
+	</select>
+
+	<resultMap id="dynamicCommentMap" type="DynamicComment">
+		<result property="comment_content" column="comment_content"/>
+		<result property="comment_date" column="comment_date"/>
+		<result property="comment_to_user_name" column="user_name"/>
+		<result property="essay_comment_number" column="essay_comment_number"/>
+		<result property="essay_thumb" column="essay_thumb"/>
+		<result property="essay_title" column="essay_title"/>
+		<result property="essay_visits" column="essay_visits"/>
+		<result property="essay_content_path" column="essay_content_path"/>
+	</resultMap>
 </mapper>

@@ -5,11 +5,34 @@
 <mapper namespace="com.xupt.dao.IAttentionUserDao">
 
     <insert id="saveAttentionUser">
-        INSERT INTO ${attentionUserTableName} values (NULL, #{attention.from_user_id}, #{attention.to_user_id})
+        INSERT INTO ${attentionUserTableName} values (NULL, #{attention.from_user_id}, #{attention.to_user_id}, NOW())
     </insert>
 
     <delete id="deleteAttentionById">
         DELETE FROM ${attentionUserTableName} WHERE to_user_id = #{toUserId} AND from_user_id = #{fromUserId}
     </delete>
+
+    <select id="selectDynamicAttentionUser" resultMap="dynamicAttentionUserMap">
+        SELECT
+            attention_user_date,
+            user_description,
+            user_description,
+            user_essay_number,
+            user_fans,
+            user_id,
+            user_name
+        FROM ${attentionUserTableName}, ebuser
+        WHERE from_user_id = #{from_user_id}
+              AND user_id = to_user_id
+    </select>
+
+    <resultMap id="dynamicAttentionUserMap" type="DynamicAttentionUser">
+        <result property="attention_user_date" column="attention_user_date"/>
+        <result property="user_description" column="user_description"/>
+        <result property="user_essay_number" column="user_essay_number"/>
+        <result property="user_fans" column="user_fans"/>
+        <result property="user_id" column="user_id"/>
+        <result property="user_name" column="user_name"/>
+    </resultMap>
 
 </mapper>

@@ -1,6 +1,7 @@
 package com.xupt.dao;
 
 import com.xupt.bean.Essay;
+import com.xupt.bean.HomePageEssay;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -15,12 +16,6 @@ public interface IEssayDao {
     public void deleteEssayById(Integer essay_id);
 
     public void updateEssay(Essay essay);
-
-    public void updateEssayContent(@Param("essay_content") byte[] essay_content,
-                                   @Param("essay_id") Integer essay_id);
-
-    public void updateEssayTitle(@Param("essay_title") String essay_title,
-                                 @Param("essay_id") Integer essay_id);
 
     public void updateEssayVisits(@Param("essay_visits") Integer essay_visits,
                                   @Param("essay_id") Integer essay_id);
@@ -38,7 +33,7 @@ public interface IEssayDao {
 
     public List<Essay> findEssayByUserId(Integer userId);
 
-    public List<Essay> findEssayHomePage();
+    public List<HomePageEssay> findEssayHomePage();
 
     public List<Essay> findUserAnthologyEssayInfo(Integer essay_anthology_id);
 

@@ -24,7 +24,7 @@ public class CommentDaoTest {
     public void run() {
         Comment comment = new Comment();
 
-        comment.setComment_content(new String("123456").getBytes());
+//        comment.setComment_content(new String("123456").getBytes());
         comment.setComment_date(new Date());
         comment.setComment_essay_id(1);
         comment.setComment_floor(1);

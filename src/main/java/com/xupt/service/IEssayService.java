@@ -1,6 +1,7 @@
 package com.xupt.service;
 
 import com.xupt.bean.Essay;
+import com.xupt.bean.HomePageEssay;
 
 import java.util.List;
 
@@ -8,7 +9,9 @@ public interface IEssayService {
 
     public void newEssay(Essay essay);
 
-    public List<Essay> searchHotEssay();
+    public void amendEssay(Essay essay);
+
+    public List<HomePageEssay> searchHotEssay();
 
     public List<Essay> searchWheelPhoto();
 

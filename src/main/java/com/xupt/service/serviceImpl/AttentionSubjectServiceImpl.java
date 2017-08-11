@@ -1,9 +1,12 @@
 package com.xupt.service.serviceImpl;
 
+import com.xupt.bean.DynamicAttentionSubject;
 import com.xupt.dao.IAttentionSubjectDao;
 import com.xupt.service.IAttentionSubjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * Created by colin on 2017/7/20.
@@ -37,5 +40,12 @@ public class AttentionSubjectServiceImpl implements IAttentionSubjectService {
         String attentionSubjectTableName = PRE_ATTENTION_SUBJECT_TABLE_NAME + tableCount;
 
         attentionSubjectDao.deleteAttentionSubject(attentionSubjectTableName, from_user_id, to_essay_id);
+    }
+
+    public List<DynamicAttentionSubject> searchUserDynamicAttentionSubject(Integer from_user_id) {
+        int tableCount = searchWhereToSaveAttentionSubject(from_user_id);
+        String attentionSubjectTableName = PRE_ATTENTION_SUBJECT_TABLE_NAME + tableCount;
+
+        return attentionSubjectDao.selectAttentionSubject(attentionSubjectTableName, from_user_id);
     }
 }

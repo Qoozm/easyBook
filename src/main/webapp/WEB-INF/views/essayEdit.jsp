@@ -6,12 +6,12 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" isELIgnored="false" %>
+<%@ page contentType="text/html;charset=UTF-8" isELIgnored="false" %>
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
-    <title></title>
+    <title>写文章</title>
 
     <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.no-icons.min.css"
           rel="stylesheet">
@@ -20,7 +20,7 @@
     <link rel="stylesheet" href="../../static/css/public.css"/>
     <style type="text/css">
         body {
-            margin: 0px;
+            margin: 0;
             overflow: hidden;
             height: 648px;
         }
@@ -47,8 +47,8 @@
 
         .x{
             position: absolute;
-            top: 0px;
-            left: 0px;
+            top: 0;
+            left: 0;
             background-color: rgba(0,0,0,0.3);
             display: none;
         }
@@ -67,7 +67,7 @@
             width: 200px;
         }
         .window>.buttonX{
-            margin:0px 20px;
+            margin:0 20px;
             width: 60px;
             height: 30px;
             outline: none;
@@ -99,7 +99,7 @@
 
         #container > .left button {
             background-color: inherit;
-            border: 0px;
+            border: 0;
             outline: none;
         }
 
@@ -109,7 +109,7 @@
         }
 
         #container > .left > .anthology-ul {
-            margin-left: 0px;
+            margin-left: 0;
         }
 
         #container > .left > .anthology-ul > li {
@@ -156,7 +156,7 @@
 
         #container > .center > button {
             background-color: #FFFFFF;
-            border: 0px;
+            border: 0;
             outline: none;
             font-size: 15px;
             color: #AAAAAA;
@@ -169,7 +169,7 @@
 
         #container > .center > .essay-item {
             width: 100%;
-            margin: 0px;
+            margin: 0;
         }
 
         #container > .center > .essay-item > li {
@@ -180,6 +180,7 @@
             line-height: 40px;
             font-weight: 500;
             position: relative;
+            cursor: pointer;
         }
 
         #container > .center > .essay-item > .active {
@@ -194,7 +195,7 @@
 
         #container > .center > .essay-item > li > button {
             background-color: initial;
-            border: 0px;
+            border: 0;
             outline: none;
             display: none;
             position: absolute;
@@ -235,7 +236,7 @@
             border: #777777 solid 1px;
         }
 
-        #container > .right > .hero-unit > .send-btn {
+        #container > .right > .hero-unit > .send-btn, .update-btn {
             position: absolute;
             right: 20px;
             height: 30px;
@@ -243,7 +244,7 @@
             font-size: 18px;
             line-height: 30px;
             outline: none;
-            border: 0px;
+            border: 0;
             background-color: #CCCCCC;
             border-radius: 5px;
         }
@@ -260,7 +261,7 @@
             border: 1px solid rgb(204, 204, 204);
             padding: 4px;
             box-sizing: content-box;
-            -webkit-box-shadow: rgba(0, 0, 0, 0.0745098) 0px 1px 1px 0px inset;
+            -webkit-box-shadow: rgba(0, 0, 0, 0.0745098) 0 1px 1px 0 inset;
             box-shadow: rgba(0, 0, 0, 0.0745098) 0px 1px 1px 0px inset;
             border-top-right-radius: 3px;
             border-bottom-right-radius: 3px;
@@ -300,7 +301,7 @@
 <body>
 
 <div class="x">
-    <form class="window" action="/editEssay/newAnthology" method="post" onsubmit="return checkX()">
+    <form class="window" action="<c:url value="/editEssay/newAnthology"/>" method="post" onsubmit="return checkX()">
         <input style="display: none;" name="user_id" value="${user.user_id}" />
         <input class="text" name="anthology_name" placeholder="请输入文集名称" />
         <input class="buttonX" type="submit" value="确定" />
@@ -335,6 +336,8 @@
         <div style="visibility: hidden;" class="hero-unit">
             <input class="h" value="" placeholder="标题"/>
             <input class="send-btn" type="button" value="发布"/>
+            <input style="display: none;" class="update-btn" type="button" value="修改"/>
+
             <div class="btn-toolbar" data-role="editor-toolbar" data-target="#editor">
                 <div class="btn-group">
                     <a class="btn dropdown-toggle" data-toggle="dropdown" title="Font"><i class="icon-font"></i><b
@@ -415,6 +418,7 @@
         getAnthology();	//获取专题
         creatEssayEvent();      //创建文章
         release();		//发布文章
+        updateEssay();  //修改文章
         createA();      //新建文集
     }
 
@@ -546,11 +550,16 @@
             var editor = document.getElementById("editor");
             var ant_ul = document.getElementsByClassName("anthology-ul")[0];
             var essay_title = document.getElementsByClassName("h")[0].value;    //标题
-            var essay_user_id = ${user.user_id};        //作者ID
+            var essay_user_id = "${user.user_id}";        //作者ID
             var essay_content = editor.innerHTML;       //文章内容
             var essay_pubDate = new Date();     //时间
             var essay_anthology_id = ant_ul.getElementsByClassName("active")[0].index;       //文集ID
-            var img = editor.getElementsByTagName("img")[0];
+            var img = editor.getElementsByTagName("img");
+            var essay_photo = 0;
+            if (img.length > 0) {
+                essay_photo = 1;
+            }
+
 
             $.ajax({
                 type: "post",
@@ -560,10 +569,54 @@
                 contentType: 'application/json',
                 data: JSON.stringify({
                     essay_title: essay_title, essay_user_id: essay_user_id, essay_content: essay_content,
-                    essay_pubDate: essay_pubDate, essay_anthology_id: essay_anthology_id
+                    essay_pubDate: essay_pubDate, essay_anthology_id: essay_anthology_id, essay_photo: essay_photo
                 }),
                 success: function (data) {
-                    console.log(data);
+                    if(data){
+                        getEssay(essay_anthology_id);
+                    }
+                },
+                error: function (err) {
+                    console.log("err:" + err.message);
+                }
+            });
+        }
+    }
+
+    //修改文章
+    function updateEssay() {
+        var btn = document.getElementsByClassName("update-btn")[0];
+        btn.onclick = function () {
+            var editor = document.getElementById("editor"),
+                ant_ul = document.getElementsByClassName("anthology-ul")[0],
+                essay_ul = document.getElementsByClassName("essay-item")[0];
+
+            var essay_user_id = "${user.user_id}",        //作者ID
+                essay_anthology_id = ant_ul.getElementsByClassName("active")[0].index,       //文集ID
+                essay_id = essay_ul.getElementsByClassName("active")[0].index,      //文章ID
+                essay_title = document.getElementsByClassName("h")[0].value,    //标题
+                essay_content = editor.innerHTML,       //文章内容
+                essay_pubDate = new Date();     //时间
+            var img = editor.getElementsByTagName("img");
+            var essay_photo = 0;
+            if (img.length > 0) {
+                essay_photo = 1;
+            }
+
+            $.ajax({
+                type: "post",
+                url: "/editEssay/amendEssay",
+                async: true,
+                dataType: 'json',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    essay_id: essay_id,essay_title: essay_title, essay_user_id: essay_user_id, essay_content: essay_content,
+                    essay_pubDate: essay_pubDate, essay_anthology_id: essay_anthology_id, essay_photo: essay_photo
+                }),
+                success: function (data) {
+                    if(data){
+                        getEssay(essay_anthology_id);
+                    }
                 },
                 error: function (err) {
                     console.log("err:" + err.message);
@@ -607,6 +660,16 @@
                         getEditor(essay_id);
                     }
                     showEdit();
+                    //显示修改或发布按钮
+                    var btn_send = document.getElementsByClassName("send-btn")[0],
+                        btn_update = document.getElementsByClassName("update-btn")[0];
+                    if(essay_id !="" ){
+                        btn_update.style.display = "inline-block";
+                        btn_send.style.display = "none";
+                    }else{
+                        btn_update.style.display = "none";
+                        btn_send.style.display = "inline-block";
+                    }
                     //实现点击样式变化
                     var li_off = ul.getElementsByClassName("active")[0];	//原active
                     if (li_off) {
@@ -630,6 +693,11 @@
     function creatEssayEvent() {
         var btn = document.getElementById("newEssay");
         btn.onclick = function () {
+            var btn_send = document.getElementsByClassName("send-btn")[0],
+                btn_update = document.getElementsByClassName("update-btn")[0];
+            btn_update.style.display = "none";
+            btn_send.style.display = "inline-block";
+
             var ul = document.getElementsByClassName("essay-item")[0];
             var li = document.createElement("li");
             var span = document.createElement("span");

@@ -20,11 +20,15 @@ public class MessageServiceImpl implements IMessageService {
     private final int MESSAGE_TABLE_COUNT = 5;
     private String PRE_MESSAGE_TABLE_NAME = "ebmessage_";
 
-    @Autowired
-    private IMessageDao messageDao;
+    private final IMessageDao messageDao;
+
+    private final IMessageCategoryDao categoryDao;
 
     @Autowired
-    private IMessageCategoryDao categoryDao;
+    public MessageServiceImpl(IMessageDao messageDao, IMessageCategoryDao categoryDao) {
+        this.messageDao = messageDao;
+        this.categoryDao = categoryDao;
+    }
 
     public int searchWhereToSaveMessage(Integer message_to_user_id) {
         int result;
@@ -71,7 +75,6 @@ public class MessageServiceImpl implements IMessageService {
         int tableCount = searchWhereToSaveMessage(message_to_user_id);
         String messageTableName = PRE_MESSAGE_TABLE_NAME + tableCount;
 
-        List<Message> messages = messageDao.findMessageNotSend(messageTableName, message_to_user_id, Message.NOT_SEND_MESSAGE);
-        return messages;
+        return messageDao.findMessageNotSend(messageTableName, message_to_user_id, Message.NOT_SEND_MESSAGE);
     }
 }
